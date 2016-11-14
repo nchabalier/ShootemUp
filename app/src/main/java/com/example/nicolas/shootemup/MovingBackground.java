@@ -49,7 +49,7 @@ public class MovingBackground extends SurfaceView implements
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        doDrawRunningVerticalReverse(canvas);
+        /*doDrawRunningVerticalReverse(canvas);
 
         playerShip.draw(canvas);
 
@@ -98,7 +98,7 @@ public class MovingBackground extends SurfaceView implements
             Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
