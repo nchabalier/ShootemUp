@@ -2,49 +2,107 @@ package com.example.nicolas.shootemup;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
+
+import java.util.List;
 
 /**
  * Created by Nicolas on 04/11/2016.
  */
 
-public class Ship {
+public class Ship extends GameEntity{
 
-    private Bitmap bitmap;
-    private int x;
-    private int y;
-    private int cooldown = 5;
-    private int cmp;
 
-    Ship(Bitmap bitmap) {
-        this.bitmap = bitmap;
+    protected int cooldown = 5;
+    protected int cmp;
+    protected int healthPoint;
+    protected int currentHealth;
+    protected int shield;
+    protected List<Weapon> availableWeapon;
+    protected Weapon activeWeapon;
+
+    public Ship(Point position, Bitmap bitmap, Collider collider, int cmp, int healthPoint, int currentHealth, int shield, List<Weapon> availableWeapon, Weapon activeWeapon) {
+        super(position, bitmap, collider);
+        this.cmp = cmp;
+        this.healthPoint = healthPoint;
+        this.currentHealth = currentHealth;
+        this.shield = shield;
+        this.availableWeapon = availableWeapon;
+        this.activeWeapon = activeWeapon;
     }
 
-    Ship(Bitmap bitmap, int x, int y) {
-        this(bitmap);
-        this.x = x;
-        this.y = y;
+    public int getCooldown() {
+        return cooldown;
+    }
+
+    public void setCooldown(int cooldown) {
+        this.cooldown = cooldown;
+    }
+
+    public int getCmp() {
+        return cmp;
+    }
+
+    public void setCmp(int cmp) {
+        this.cmp = cmp;
+    }
+
+    public int getHealthPoint() {
+        return healthPoint;
+    }
+
+    public void setHealthPoint(int healthPoint) {
+        this.healthPoint = healthPoint;
+    }
+
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
+    }
+
+    public int getShield() {
+        return shield;
+    }
+
+    public void setShield(int shield) {
+        this.shield = shield;
+    }
+
+    public List<Weapon> getAvailableWeapon() {
+        return availableWeapon;
+    }
+
+    public void setAvailableWeapon(List<Weapon> availableWeapon) {
+        this.availableWeapon = availableWeapon;
+    }
+
+    public Weapon getActiveWeapon() {
+        return activeWeapon;
+    }
+
+    public void setActiveWeapon(Weapon activeWeapon) {
+        this.activeWeapon = activeWeapon;
     }
 
     void draw(Canvas can) {
-        draw(can, x, y);
+        draw(can, position.x, position.y);
     }
 
     void draw(Canvas can, int px, int py) {
         can.drawBitmap(bitmap, px, py, null);
     }
 
-    public void setPosition(int px, int py)
-    {
-        this.x=px;
-        this.y=py;
-    }
+
 
     public void setX(int px) {
-        this.x = px;
+        position.x = px;
     }
 
     public void setY(int py) {
-        this.y = py;
+        position.y = py;
     }
 
     /**
@@ -57,15 +115,19 @@ public class Ship {
             return null;
         }
         cmp=0;
-        return new Shoot(x+bitmap.getWidth()/2, y, 0, -1, 10, 1);
+        int posX = position.x+bitmap.getWidth()/2;
+        Point pos = new Point(posX,position.y);
+        return new Shoot(collider,bitmap,pos, 0, -1, 10, 1);
     }
+
+
 
     //Check if the shoot hit the ship
     public boolean isInside(Shoot shoot) {
         int shootX = shoot.getX();
-        if(shootX > this.x && shootX< this.x + bitmap.getWidth()) {
+        if(shootX > position.x && shootX< position.x + bitmap.getWidth()) {
             int shootY = shoot.getY();
-            if(shootY > this.y && shootY< this.y + bitmap.getHeight()) {
+            if(shootY > position.y && shootY< position.y + bitmap.getHeight()) {
                 return true;
             }
         }
