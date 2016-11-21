@@ -93,7 +93,7 @@ public class GameView extends SurfaceView implements Runnable {
 
 
         //Add enemies for test
-        enemiesShips.add(new Ship(playerShipBitmap, 300, 0));
+        enemiesShips.add(new Ship(playerShipBitmap, 300, 0, "Straight"));
 
         // Set our boolean to true - game on!
         playing = true;
@@ -137,6 +137,15 @@ public class GameView extends SurfaceView implements Runnable {
             shoots.add(newShoot);
         }
 
+        // Update npc ships movement
+        for(Ship ship : enemiesShips){
+            if(ship.getBehavior() != null) {
+                ship.getBehavior().update();
+                if(ship.getY()>this.getHeight())
+                    ship.setY(0);
+            }
+        }
+
         //move and remove if shoot is outside the window
         //Check if a shoot hit a ship
         Iterator<Shoot> iteratorShoot = shoots.iterator();
@@ -158,7 +167,7 @@ public class GameView extends SurfaceView implements Runnable {
                             //Add a new enemy for test
                             int randomX = (int)(Math.abs(Math.random())*(getWidth()-playerShipBitmap.getWidth()));
                             //int randomX = (int)Math.random();
-                            enemiesShips.add(new Ship(playerShipBitmap, randomX, 0));
+                            enemiesShips.add(new Ship(playerShipBitmap, randomX, 0,"Straight"));
                         }
                     }
                 } else { // If the shoot go DOWN

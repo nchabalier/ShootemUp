@@ -14,6 +14,7 @@ public class Ship {
     private int y;
     private int cooldown = 5;
     private int cmp;
+    private SteeringBehaviour behavior;
 
     Ship(Bitmap bitmap) {
         this.bitmap = bitmap;
@@ -23,6 +24,14 @@ public class Ship {
         this(bitmap);
         this.x = x;
         this.y = y;
+        behavior = null;
+    }
+
+    Ship(Bitmap bitmap, int x, int y, String behaviorType) {
+        this(bitmap);
+        this.x = x;
+        this.y = y;
+        behavior = new SteeringBehaviour(this,behaviorType);
     }
 
     void draw(Canvas can) {
@@ -45,6 +54,14 @@ public class Ship {
 
     public void setY(int py) {
         this.y = py;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public SteeringBehaviour getBehavior() {
+        return behavior;
     }
 
     /**
