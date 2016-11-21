@@ -21,10 +21,10 @@ public class Ship extends GameEntity{
     protected List<Weapon> availableWeapon;
     protected Weapon activeWeapon;
 
-    public Ship(Point position, Bitmap bitmap, Collider collider, int cmp, int healthPoint, int currentHealth, int shield, List<Weapon> availableWeapon, Weapon activeWeapon) {
+    public Ship(Point position, Bitmap bitmap, Collider collider, int cmp, int health, int currentHealth, int shield, List<Weapon> availableWeapon, Weapon activeWeapon) {
         super(position, bitmap, collider);
         this.cmp = cmp;
-        this.healthPoint = healthPoint;
+        this.healthPoint = health;
         this.currentHealth = currentHealth;
         this.shield = shield;
         this.availableWeapon = availableWeapon;
