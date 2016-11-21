@@ -10,6 +10,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button buttonOptions;
     private Button buttonUpdgrade;
+    private Button buttonScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent upgradeActivityIntent = new Intent(MainActivity.this, UpgradeActivity.class);
                 startActivity(upgradeActivityIntent);
+            }
+        });
+
+        buttonScore = (Button) findViewById(R.id.buttonScore);
+        buttonScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent scoreboardActivityIntent = new Intent(MainActivity.this, ScoreBoardActivity.class);
+                startActivity(scoreboardActivityIntent);
             }
         });
 
