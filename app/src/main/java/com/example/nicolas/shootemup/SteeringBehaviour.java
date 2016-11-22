@@ -17,7 +17,7 @@ public class SteeringBehaviour {
     void goStraight(){
         int speed=10;
 
-        ship.setY(speed+ship.getY());
+        ship.setY(speed+ship.getPosition().y);
     }
 
     void update(){
