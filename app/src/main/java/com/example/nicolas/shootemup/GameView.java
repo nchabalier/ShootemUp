@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -58,10 +59,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     //---------------------------------------
     private Bitmap backGround;
-    private Bitmap playerShipBitmap;
-    private Ship playerShip;
-    private List<Shoot> shoots;
-    private List<Ship> enemiesShips;
+    private Player player;
+    private double time;
+    private List<GameEntity> gameEntities;
     private MovingBackground2 movingBackground;
 
     // When the we initialize (call new()) on gameView
