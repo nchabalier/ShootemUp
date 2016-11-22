@@ -11,20 +11,20 @@ import java.util.List;
 
 public class ShipPNJ extends Ship {
 
-    private Behavior behavior;
+    private SteeringBehaviour behavior;
     private int coin;
 
-    public ShipPNJ(Point position, Bitmap bitmap, Collider collider, int cmp, int healthPoint, int currentHealth, int shield, List<Weapon> availableWeapon, Weapon activeWeapon, Behavior behavior, int coin) {
+    public ShipPNJ(Point position, Bitmap bitmap, Collider collider, int cmp, int healthPoint, int currentHealth, int shield, List<Weapon> availableWeapon, Weapon activeWeapon, SteeringBehaviour behavior, int coin) {
         super(position, bitmap, collider, cmp, healthPoint, currentHealth, shield, availableWeapon, activeWeapon);
         this.behavior = behavior;
         this.coin = coin;
     }
 
-    public Behavior getBehavior() {
+    public SteeringBehaviour getBehavior() {
         return behavior;
     }
 
-    public void setBehavior(Behavior behavior) {
+    public void setBehavior(SteeringBehaviour behavior) {
         this.behavior = behavior;
     }
 

@@ -75,46 +75,20 @@ public class Ship extends GameEntity{
         return availableWeapon;
     }
 
-<<<<<<< HEAD
+
     public void setAvailableWeapon(List<Weapon> availableWeapon) {
         this.availableWeapon = availableWeapon;
     }
-=======
-    private Bitmap bitmap;
-    private int x;
-    private int y;
-    private int cooldown = 5;
-    private int cmp;
-    private SteeringBehaviour behavior;
-<<<<<<< HEAD
-=======
->>>>>>> master
->>>>>>> Refactorisation
+
+
 
     public Weapon getActiveWeapon() {
         return activeWeapon;
     }
 
-<<<<<<< HEAD
+
     public void setActiveWeapon(Weapon activeWeapon) {
         this.activeWeapon = activeWeapon;
-=======
-    Ship(Bitmap bitmap, int x, int y) {
-        this(bitmap);
-        this.x = x;
-        this.y = y;
-        behavior = null;
-    }
-
-    Ship(Bitmap bitmap, int x, int y, String behaviorType) {
-        this(bitmap);
-        this.x = x;
-        this.y = y;
-        behavior = new SteeringBehaviour(this,behaviorType);
-<<<<<<< HEAD
-=======
->>>>>>> master
->>>>>>> Refactorisation
     }
 
     void draw(Canvas can) {
@@ -135,21 +109,7 @@ public class Ship extends GameEntity{
         position.y = py;
     }
 
-    public int getY() {
-        return y;
-    }
 
-    public SteeringBehaviour getBehavior() {
-        return behavior;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public SteeringBehaviour getBehavior() {
-        return behavior;
-    }
 
     /**
      * Shoot if cooldown is finish, if not return null
