@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -84,13 +85,11 @@ public class GameView extends SurfaceView implements Runnable {
                 R.drawable.space3);
         movingBackground = new MovingBackground2(backGround);
 
+        Bitmap playerShipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
 
-        shoots = new ArrayList<Shoot>();
-        enemiesShips = new ArrayList<Ship>();
-
-        playerShipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
-        playerShip = new Ship(playerShipBitmap, 0, 775);
-
+        Point departurePoint = new Point (0,0);
+        Ship playerShip = new Ship(departurePoint,playerShipBitmap, new Collider(),1,1,1,1,new Weapon(new TypeOfShoot(),10));
+        player.setPlayerShip();
 
         //Add enemies for test
         enemiesShips.add(new Ship(playerShipBitmap, 300, 0, "Straight"));

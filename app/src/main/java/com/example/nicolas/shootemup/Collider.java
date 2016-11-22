@@ -6,5 +6,6 @@ package com.example.nicolas.shootemup;
 
 public class Collider {
 
-
+    public Collider() {
+    }
 }
