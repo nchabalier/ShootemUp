@@ -18,6 +18,7 @@ public class SteeringBehaviour {
         int speed=10;
 
         ship.setY(speed+ship.getY());
+        ship.collider.setY(ship.getY());
     }
 
     void update(){

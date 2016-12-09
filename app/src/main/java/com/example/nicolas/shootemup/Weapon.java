@@ -1,34 +1,77 @@
 package com.example.nicolas.shootemup;
 
+import android.graphics.Point;
+import android.text.format.Time;
+
+import java.util.List;
+
 /**
  * Created by Vincent on 19/11/2016.
  */
+
+
 
 public class Weapon {
 
     private TypeOfShoot typeOfShoot;
     private double rateOfFire;
+    private Time time;
+    private long cooldown;              //amount of time it takes for another shoot
+                                        // to be fired in ms
+    private long timeLastShotFired;     //Time at which the last shot was fired
+    private Ship owner;
+    private int shotPower;
+    private int shotSpeed;
+
+    private int yBound;
+    private int xBound;
 
 
+    public Weapon(TypeWeapon typeWeapon, Ship owner) {
+        this.owner=owner;
+        time = new Time();
 
-    public Weapon(TypeOfShoot typeOfShoot, double rateOfFire) {
-        this.typeOfShoot = typeOfShoot;
-         this.rateOfFire = rateOfFire;
+        switch(typeWeapon) {
+            case BASE:
+                cooldown = 500;
+                shotPower = 1;
+                shotSpeed = 10;
+                break;
+        }
     }
 
-    public TypeOfShoot getTypeOfShoot() {
-        return typeOfShoot;
+    public void update(List<GameEntity> listEntities, List<GameEntity> toAdd){
+        fire(toAdd);
     }
 
-    public void setTypeOfShoot(TypeOfShoot typeOfShoot) {
-        this.typeOfShoot = typeOfShoot;
+    private void fire(List<GameEntity> toAdd){
+        long mili;
+
+        time.setToNow();
+        mili = time.toMillis(true);
+        if((mili-timeLastShotFired)>cooldown){
+            int dirY;
+            int xOffset =0;
+
+            if(owner instanceof ShipPNJ){
+                dirY = 1;
+                xOffset = ((ShipPNJ) owner).bitmap.getHeight();
+            }
+            else {
+                dirY = -1;
+            }
+            toAdd.add(new Shoot(new Collider(owner.getX(),owner.getY()-owner.getBitmap().getHeight(),0,0)
+                    ,null,new Point(owner.getX()+owner.bitmap.getWidth()/2+xOffset,owner.getY()-owner.getBitmap().getHeight()),0,dirY,
+                    shotSpeed,shotPower,xBound ,yBound ));
+            timeLastShotFired=mili;
+        }
     }
 
-    public double getRateOfFire() {
-        return rateOfFire;
+    public void setxBound(int xBound) {
+        this.xBound = xBound;
     }
 
-    public void setRateOfFire(double rateOfFire) {
-        this.rateOfFire = rateOfFire;
+    public void setyBound(int yBound) {
+        this.yBound = yBound;
     }
 }

@@ -11,28 +11,20 @@ import java.util.List;
 
 public class ShipPNJ extends Ship {
 
-    private Behavior behavior;
+    private SteeringBehaviour behavior;
     private int coin;
 
-    public ShipPNJ(Point position, Bitmap bitmap, Collider collider, int cmp, int healthPoint, int currentHealth, int shield, List<Weapon> availableWeapon, Weapon activeWeapon, Behavior behavior, int coin) {
-        super(position, bitmap, collider, cmp, healthPoint, currentHealth, shield, availableWeapon, activeWeapon);
-        this.behavior = behavior;
+    public ShipPNJ(Point position, Bitmap bitmap, int coin) {
+        super(bitmap,position.x,position.y);
+        this.behavior = new SteeringBehaviour(this,"STRAIGHT");
         this.coin = coin;
     }
 
-    public Behavior getBehavior() {
-        return behavior;
-    }
-
-    public void setBehavior(Behavior behavior) {
-        this.behavior = behavior;
-    }
-
-    public int getCoin() {
-        return coin;
-    }
-
-    public void setCoin(int coin) {
-        this.coin = coin;
+    @Override
+    public void update(List<GameEntity> listEntities, List<GameEntity> toDelete, List<GameEntity> toAdd) {
+        super.update(listEntities, toDelete, toAdd);
+        if(!toDelete.contains(this)){
+            behavior.update();
+        }
     }
 }

@@ -6,19 +6,21 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
+import java.util.List;
+
 /**
  * Created by Nicolas on 05/11/2016.
  */
 
-public class Shoot extends GameEntity{
-    private int dirX; //between -1 and 1
-    private int dirY; //between -1 and 1
+public class Shoot extends GameEntity {
+    private int dirX;                   //between -1 and 1
+    private int dirY;                   //between -1 and 1
     private int speed;
     private int power;
     private static int RADIUS = 5;
 
-    public Shoot(Collider collider, Bitmap bitmap, Point position, int dirX, int dirY, int speed, int power) {
-        super(position,bitmap,collider);
+    public Shoot(Collider collider, Bitmap bitmap, Point position, int dirX, int dirY, int speed, int power, int xBound, int yBound) {
+        super(position,bitmap,collider,xBound ,yBound );
         this.dirX = dirX;
         this.dirY = dirY;
         this.speed = speed;
@@ -26,10 +28,13 @@ public class Shoot extends GameEntity{
     }
 
     public void move() {
-        position.x += (int)(speed * dirX);
-        position.y += (int)(speed * dirY);
+        position.x += (speed * dirX);
+        collider.setX(position.x);
+        position.y += (speed * dirY);
+        collider.setY(position.y);
     }
 
+    @Override
     public void draw(Canvas can) {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
@@ -37,26 +42,42 @@ public class Shoot extends GameEntity{
         can.drawCircle(position.x, position.y, RADIUS, paint);
     }
 
-    public int getDirY() {
-        return dirY;
+    public int getPower() {
+        return power;
+    }
+
+    @Override
+    public void onCollision(List<GameEntity> toDelete, GameEntity hitter) {
+        toDelete.add(this);
+    }
+
+    @Override
+    public void onDestroy() {
+
+    }
+
+    private boolean isOutOfBounds(){
+        boolean outOfBounds = false;
+
+        if(position.x <0 || position.y <0 || position.x > xBound || position.y > yBound)
+            outOfBounds = true;
+
+        return outOfBounds;
     }
 
 
-    //FIXME: can be optimized
-    public boolean isInside(int height, int width){
-        if(position.x>0 && position.x<width) {
-            if(position.y>0 && position.y<height){
-                return true;
+    @Override
+    public void update(List<GameEntity> listEntities, List<GameEntity> toDelete, List<GameEntity> toAdd) {
+
+        for(GameEntity entity : listEntities){
+            if(entity.collider != null) {
+                collider.isColliding(entity.collider, toDelete);
             }
         }
-        return false;
-    }
-
-    public int getX() {
-        return position.x;
-    }
-
-    public int getY() {
-        return position.y;
+        if(!toDelete.contains(this)){
+            move();
+        }
+        if(isOutOfBounds())
+            toDelete.add(this);
     }
 }
