@@ -10,13 +10,11 @@ import android.os.Bundle;
 
 public class GameActivity extends Activity{
 
-    private MovingBackground movingBackground;
     private GameView gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //movingBackground = new MovingBackground(this);
         //setContentView(movingBackground);
         gameView = new GameView(this);
         setContentView(gameView);

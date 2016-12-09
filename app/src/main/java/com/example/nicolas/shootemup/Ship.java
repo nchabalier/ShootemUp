@@ -10,88 +10,26 @@ import java.util.List;
  * Created by Nicolas on 04/11/2016.
  */
 
-public class Ship extends GameEntity{
+public class Ship extends GameEntity {
 
-
-    protected int cooldown = 5;
-    protected int cmp;
     protected int healthPoint;
     protected int currentHealth;
     protected int shield;
     protected List<Weapon> availableWeapon;
     protected Weapon activeWeapon;
+    protected boolean invincible;
+    protected int protectionStartTime;
 
-    public Ship(Point position, Bitmap bitmap, Collider collider, int cmp, int health, int currentHealth, int shield, List<Weapon> availableWeapon, Weapon activeWeapon) {
-        super(position, bitmap, collider);
-        this.cmp = cmp;
-        this.healthPoint = health;
-        this.currentHealth = currentHealth;
-        this.shield = shield;
-        this.availableWeapon = availableWeapon;
-        this.activeWeapon = activeWeapon;
+    Ship(Bitmap bitmap, int x, int y) {
+        super(new Point(x,y),bitmap,new Collider(x,y,bitmap.getWidth(),bitmap.getHeight()),0 ,0);
+        activeWeapon = new Weapon(TypeWeapon.BASE,this);
+        collider.setOwner(this);
+        this.healthPoint =3;
+        this.currentHealth = this.healthPoint;
     }
 
-    public int getCooldown() {
-        return cooldown;
-    }
-
-    public void setCooldown(int cooldown) {
-        this.cooldown = cooldown;
-    }
-
-    public int getCmp() {
-        return cmp;
-    }
-
-    public void setCmp(int cmp) {
-        this.cmp = cmp;
-    }
-
-    public int getHealthPoint() {
-        return healthPoint;
-    }
-
-    public void setHealthPoint(int healthPoint) {
-        this.healthPoint = healthPoint;
-    }
-
-    public int getCurrentHealth() {
-        return currentHealth;
-    }
-
-    public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = currentHealth;
-    }
-
-    public int getShield() {
-        return shield;
-    }
-
-    public void setShield(int shield) {
-        this.shield = shield;
-    }
-
-    public List<Weapon> getAvailableWeapon() {
-        return availableWeapon;
-    }
-
-
-    public void setAvailableWeapon(List<Weapon> availableWeapon) {
-        this.availableWeapon = availableWeapon;
-    }
-
-
-
-    public Weapon getActiveWeapon() {
-        return activeWeapon;
-    }
-
-
-    public void setActiveWeapon(Weapon activeWeapon) {
-        this.activeWeapon = activeWeapon;
-    }
-
-    void draw(Canvas can) {
+    @Override
+    public void draw(Canvas can) {
         draw(can, position.x, position.y);
     }
 
@@ -99,44 +37,63 @@ public class Ship extends GameEntity{
         can.drawBitmap(bitmap, px, py, null);
     }
 
-
-
     public void setX(int px) {
         position.x = px;
+        collider.setX(px);
     }
 
     public void setY(int py) {
         position.y = py;
+        collider.setY(py);
     }
 
-
-
-    /**
-     * Shoot if cooldown is finish, if not return null
-     * @return
-     */
-    public Shoot shoot() {
-        if(cmp < cooldown) {
-            cmp++;
-            return null;
-        }
-        cmp=0;
-        int posX = position.x+bitmap.getWidth()/2;
-        Point pos = new Point(posX,position.y);
-        return new Shoot(collider,bitmap,pos, 0, -1, 10, 1);
+    public int getX() {
+        return position.x;
     }
 
+    public int getY() {
+        return position.y;
+    }
 
+    @Override
+    public void setyBound(int yBound) {
+        super.setyBound(yBound);
+        activeWeapon.setyBound(yBound);
+    }
 
-    //Check if the shoot hit the ship
-    public boolean isInside(Shoot shoot) {
-        int shootX = shoot.getX();
-        if(shootX > position.x && shootX< position.x + bitmap.getWidth()) {
-            int shootY = shoot.getY();
-            if(shootY > position.y && shootY< position.y + bitmap.getHeight()) {
-                return true;
+    @Override
+    public void setxBound(int xBound) {
+        super.setxBound(xBound);
+        activeWeapon.setxBound(xBound);
+    }
+
+    @Override
+    public void update(List<GameEntity> listEntities, List<GameEntity> toDelete, List<GameEntity> toAdd) {
+
+        activeWeapon.update(listEntities,toAdd );
+        for(GameEntity entity : listEntities){
+            if(entity.collider != null) {
+                collider.isColliding(entity.collider, toDelete);
             }
         }
-        return false;
+    }
+
+    @Override
+    public void onCollision(List<GameEntity> toDelete, GameEntity hitter) {
+        if(hitter instanceof Shoot){
+            Shoot shotHitting = (Shoot) hitter;
+            currentHealth -= shotHitting.getPower();
+        }
+        else{
+            currentHealth-=1;
+        }
+        if(currentHealth<=0){
+            toDelete.add(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.Log;
@@ -12,9 +11,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -48,15 +45,6 @@ public class GameView extends SurfaceView implements Runnable {
     // Declare an object of type Bitmap
     Bitmap bitmapBob;
 
-    // Bob starts off not moving
-    boolean isMoving = false;
-
-    // He can walk at 150 pixels per second
-    float walkSpeedPerSecond = 150;
-
-    // He starts 10 pixels from the left
-    float bobXPosition = 10;
-
 
     //---------------------------------------
     private Bitmap backGround;
@@ -73,6 +61,10 @@ public class GameView extends SurfaceView implements Runnable {
         // How kind.
         super(context);
 
+        //Initialize entities list
+        gameEntities = new ArrayList<GameEntity>();
+
+
         // Initialize ourHolder and paint objects
         ourHolder = getHolder();
         paint = new Paint();
@@ -85,14 +77,20 @@ public class GameView extends SurfaceView implements Runnable {
                 R.drawable.space3);
         movingBackground = new MovingBackground2(backGround);
 
-        Bitmap playerShipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
 
-        Point departurePoint = new Point (0,0);
-        Ship playerShip = new Ship(departurePoint,playerShipBitmap, new Collider(),1,1,1,1,new Weapon(new TypeOfShoot(),10));
-        player.setPlayerShip();
+//        shoots = new ArrayList<Shoot>();
+//        enemiesShips = new ArrayList<Ship>();
+
+        Bitmap playerShipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
+        Ship playerShip = new Ship(playerShipBitmap, 0, 775);
+
+        gameEntities.add(playerShip);
+
+        // Initialize player and it's Attributes
+        player = new Player(playerShip,0);
 
         //Add enemies for test
-        enemiesShips.add(new Ship(playerShipBitmap, 300, 0, "Straight"));
+//        enemiesShips.add(new Ship(playerShipBitmap, 300, 0, "Straight"));
 
         // Set our boolean to true - game on!
         playing = true;
@@ -101,6 +99,19 @@ public class GameView extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        player.getPlayerShip().setY(getBottom()-player.getPlayerShip().getBitmap().getHeight());
+        player.getPlayerShip().setxBound(getRight());
+        player.getPlayerShip().setyBound(getBottom());
+
+        gameEntities.add(new ShipPNJ(new Point(20,20),player.getPlayerShip().getBitmap(),10));
+
         while (playing) {
 
             // Capture the current time in milliseconds in startFrameTime
@@ -128,84 +139,26 @@ public class GameView extends SurfaceView implements Runnable {
     // In later projects we will have dozens (arrays) of objects.
     // We will also do other things like collision detection.
     public void update() {
+        List<GameEntity> toDelete = new ArrayList<GameEntity>();
+        List<GameEntity> toAdd = new ArrayList<GameEntity>();
 
-
-        Shoot newShoot = playerShip.shoot();
-        // if the ship can shoot
-        if(newShoot!=null) {
-            shoots.add(newShoot);
+        for(GameEntity entity : gameEntities) {
+            entity.update(gameEntities,toDelete,toAdd );
         }
 
-        // Update npc ships movement
-        for(Ship ship : enemiesShips){
-            if(ship.getBehavior() != null) {
-                ship.getBehavior().update();
-                if(ship.getY()>this.getHeight())
-                    ship.setY(0);
-            }
+        for(GameEntity entity : toAdd){
+            gameEntities.add(entity);
         }
 
-        //move and remove if shoot is outside the window
-        //Check if a shoot hit a ship
-        Iterator<Shoot> iteratorShoot = shoots.iterator();
-        while (iteratorShoot.hasNext()) {
-            Shoot shoot = iteratorShoot.next();
-            shoot.move();
-            if(!shoot.isInside(getHeight(), getWidth())) {
-                iteratorShoot.remove();
-            } else {
-                //If the shoot go UP
-                if(shoot.getDirY() < 0) {
-                    Iterator<Ship> iteratorShip = enemiesShips.iterator();
-                    while (iteratorShip.hasNext()) {
-                        Ship ship = iteratorShip.next();
-
-                        if(ship.isInside(shoot)) {
-                            iteratorShip.remove();
-                            iteratorShoot.remove();
-                            //Add a new enemy for test
-                            int randomX = (int)(Math.abs(Math.random())*(getWidth()-playerShipBitmap.getWidth()));
-                            //int randomX = (int)Math.random();
-                            enemiesShips.add(new Ship(playerShipBitmap, randomX, 0,"Straight"));
-                        }
-                    }
-                } else { // If the shoot go DOWN
-                    if(playerShip.isInside(shoot)) {
-                        //GAME OVER
-                        playing = false;
-                    }
-                }
-            }
+        for(GameEntity entity : toDelete){
+            entity.onDestroy();
+            gameEntities.remove(entity);
         }
 
     }
 
     // Draw the newly updated scene
     public void draw() {
-
-        // Make sure our drawing surface is valid or we crash
-        /*if (ourHolder.getSurface().isValid()) {
-            // Lock the canvas ready to draw
-            canvas = ourHolder.lockCanvas();
-
-            // Draw the background color
-            canvas.drawColor(Color.argb(255,  26, 128, 182));
-
-            // Choose the brush color for drawing
-            paint.setColor(Color.argb(255,  249, 129, 0));
-
-            // Make the text a bit bigger
-            paint.setTextSize(45);
-
-            // Display the current fps on the screen
-            canvas.drawText("FPS:" + fps, 20, 40, paint);
-
-            // Draw bob at bobXPosition, 200 pixels
-            canvas.drawBitmap(bitmapBob, bobXPosition, 200, paint);
-
-            // Draw everything to the screen
-            ourHolder.unlockCanvasAndPost(canvas);
-        }*/
 
         // Make sure our drawing surface is valid or we crash
         if (ourHolder.getSurface().isValid()) {
@@ -216,19 +169,9 @@ public class GameView extends SurfaceView implements Runnable {
             //canvas.drawColor(Color.BLACK);
             movingBackground.draw(canvas);
 
-
-            playerShip.draw(canvas);
-
-            for (Shoot shoot : shoots) {
-                shoot.draw(canvas);
+            for(GameEntity entity : gameEntities){
+                entity.draw(canvas);
             }
-
-            for (Ship ships : enemiesShips) {
-                ships.draw(canvas);
-            }
-
-            // Display the current fps on the screen
-            //canvas.drawText("FPS:" + fps, 20, 40, paint);
 
             // Draw everything to the screen
             ourHolder.unlockCanvasAndPost(canvas);
@@ -265,7 +208,7 @@ public class GameView extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
         int x = (int)motionEvent.getX();
-        playerShip.setX(x-25);
+        player.getPlayerShip().setX(x-25);
         invalidate();
         return true;
 
