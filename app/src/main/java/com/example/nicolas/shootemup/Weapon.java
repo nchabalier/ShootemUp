@@ -35,7 +35,7 @@ public class Weapon {
             case BASE:
                 cooldown = 500;
                 shotPower = 1;
-                shotSpeed = 10;
+                shotSpeed = 15;
                 break;
         }
     }
@@ -51,18 +51,21 @@ public class Weapon {
         mili = time.toMillis(true);
         if((mili-timeLastShotFired)>cooldown){
             int dirY;
-            int xOffset =0;
+            int yOffset =0;
+            Boolean firedByNpc;
 
             if(owner instanceof ShipPNJ){
                 dirY = 1;
-                xOffset = ((ShipPNJ) owner).bitmap.getHeight();
+                yOffset = ((ShipPNJ) owner).bitmap.getHeight()+5;
+                firedByNpc = true;
             }
             else {
                 dirY = -1;
+                firedByNpc = false;
             }
             toAdd.add(new Shoot(new Collider(owner.getX(),owner.getY()-owner.getBitmap().getHeight(),0,0)
-                    ,null,new Point(owner.getX()+owner.bitmap.getWidth()/2+xOffset,owner.getY()-owner.getBitmap().getHeight()),0,dirY,
-                    shotSpeed,shotPower,xBound ,yBound ));
+                    ,null,new Point(owner.getX()+owner.bitmap.getWidth()/2,owner.getY()+yOffset),0,dirY,
+                    shotSpeed,shotPower,xBound ,yBound, firedByNpc));
             timeLastShotFired=mili;
         }
     }

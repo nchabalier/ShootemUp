@@ -24,7 +24,7 @@ public class Ship extends GameEntity {
         super(new Point(x,y),bitmap,new Collider(x,y,bitmap.getWidth(),bitmap.getHeight()),0 ,0);
         activeWeapon = new Weapon(TypeWeapon.BASE,this);
         collider.setOwner(this);
-        this.healthPoint =3;
+        this.healthPoint =1;
         this.currentHealth = this.healthPoint;
     }
 

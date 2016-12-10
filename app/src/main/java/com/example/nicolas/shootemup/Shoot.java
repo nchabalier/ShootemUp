@@ -18,13 +18,16 @@ public class Shoot extends GameEntity {
     private int speed;
     private int power;
     private static int RADIUS = 5;
+    private boolean firedByNPC;
 
-    public Shoot(Collider collider, Bitmap bitmap, Point position, int dirX, int dirY, int speed, int power, int xBound, int yBound) {
+    public Shoot(Collider collider, Bitmap bitmap, Point position, int dirX, int dirY, int speed, int power, int xBound, int yBound, Boolean firedByNpc) {
         super(position,bitmap,collider,xBound ,yBound );
         this.dirX = dirX;
         this.dirY = dirY;
         this.speed = speed;
         this.power = power;
+        collider.setOwner(this);
+        this.firedByNPC = firedByNpc;
     }
 
     public void move() {
@@ -79,5 +82,9 @@ public class Shoot extends GameEntity {
         }
         if(isOutOfBounds())
             toDelete.add(this);
+    }
+
+    public boolean isFiredByNPC() {
+        return firedByNPC;
     }
 }

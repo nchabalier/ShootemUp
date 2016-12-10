@@ -16,15 +16,20 @@ public class ShipPNJ extends Ship {
 
     public ShipPNJ(Point position, Bitmap bitmap, int coin) {
         super(bitmap,position.x,position.y);
-        this.behavior = new SteeringBehaviour(this,"STRAIGHT");
+        this.behavior = new SteeringBehaviour(this,"Straight");
         this.coin = coin;
     }
 
     @Override
     public void update(List<GameEntity> listEntities, List<GameEntity> toDelete, List<GameEntity> toAdd) {
-        super.update(listEntities, toDelete, toAdd);
+        for(GameEntity entity : listEntities){
+            if(entity.collider != null) {
+                collider.isColliding(entity.collider, toDelete);
+            }
+        }
         if(!toDelete.contains(this)){
             behavior.update();
         }
+        activeWeapon.update(listEntities,toAdd);
     }
 }

@@ -26,13 +26,21 @@ public class Collider {
     }
 
     public void isColliding(Collider other, List<GameEntity> toDelete){
-        int shootX = other.x;
-        if(shootX > x && shootX< x + width) {
-            int shootY = other.y;
-            if(shootY > y && shootY< y + height) {
-                owner.onCollision(toDelete,other.owner );
-            }
+
+        if(other==this)
+            return;
+
+        if(owner instanceof Shoot && other.owner instanceof Shoot){
+            if(((Shoot) owner).isFiredByNPC() && ((Shoot) other.owner).isFiredByNPC())
+                return;
         }
+
+        int otherX = other.x;
+        int otherY = other.y;
+
+        if(!((x+width<otherX)||(x>otherX+other.width) || (y+height<otherY)||(y>otherY+other.height)))
+            owner.onCollision(toDelete,other.owner );
+
     }
 
     public void setX(int x) {

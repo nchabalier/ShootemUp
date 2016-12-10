@@ -99,9 +99,11 @@ public class GameView extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
+        ShipPNJ testNpc;
+
 
         try {
-            Thread.sleep(100);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -110,7 +112,11 @@ public class GameView extends SurfaceView implements Runnable {
         player.getPlayerShip().setxBound(getRight());
         player.getPlayerShip().setyBound(getBottom());
 
-        gameEntities.add(new ShipPNJ(new Point(20,20),player.getPlayerShip().getBitmap(),10));
+        testNpc = new ShipPNJ(new Point(20,20),player.getPlayerShip().getBitmap(),10);
+        testNpc.setxBound(getRight());
+        testNpc.setyBound(getBottom());
+
+        gameEntities.add(testNpc);
 
         while (playing) {
 
