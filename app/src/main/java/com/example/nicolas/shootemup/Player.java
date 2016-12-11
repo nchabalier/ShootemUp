@@ -8,6 +8,7 @@ public class Player {
 
     private Ship playerShip;
     private int coin;
+    public int score;
 
     public Player(Ship playerShip, int coin) {
         this.playerShip = playerShip;

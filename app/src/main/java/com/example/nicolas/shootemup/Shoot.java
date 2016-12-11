@@ -19,22 +19,24 @@ public class Shoot extends GameEntity {
     protected int power;
     protected static int RADIUS = 5;
     protected boolean firedByNPC;
-
     public Shoot(Collider collider, Bitmap bitmap, Point position, int dirX, int dirY, int speed, int power, int xBound, int yBound, Boolean firedByNpc) {
-        super(position,bitmap,collider,xBound ,yBound );
+        super(position,bitmap,collider);
+        Collider colider = new Collider(position.x-RADIUS,position.y-RADIUS,2*RADIUS,2*RADIUS,this);
+        this.collider=colider;
+
         this.dirX = dirX;
         this.dirY = dirY;
         this.speed = speed;
         this.power = power;
         collider.setOwner(this);
-        this.firedByNPC = firedByNpc;
+        this.isNpc = firedByNpc;
     }
 
     public void move() {
         position.x += (speed * dirX);
-        collider.setX(position.x);
+        collider.setX(position.x-RADIUS);
         position.y += (speed * dirY);
-        collider.setY(position.y);
+        collider.setY(position.y-RADIUS);
     }
 
     public void updateDirection(List<GameEntity> listEntities) {
@@ -62,15 +64,6 @@ public class Shoot extends GameEntity {
 
     }
 
-    private boolean isOutOfBounds(){
-        boolean outOfBounds = false;
-
-        if(position.x <0 || position.y <0 || position.x > xBound || position.y > yBound)
-            outOfBounds = true;
-
-        return outOfBounds;
-    }
-
 
     @Override
     public void update(List<GameEntity> listEntities, List<GameEntity> toDelete, List<GameEntity> toAdd) {
@@ -87,9 +80,5 @@ public class Shoot extends GameEntity {
         }
         if(isOutOfBounds())
             toDelete.add(this);
-    }
-
-    public boolean isFiredByNPC() {
-        return firedByNPC;
     }
 }

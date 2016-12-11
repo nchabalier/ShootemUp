@@ -25,6 +25,7 @@ public class SteeringBehaviour {
         ship.setY(speed+ship.getY());
     }
 
+
     void update(){
         if (type.equals("Straight"))
             goStraight();

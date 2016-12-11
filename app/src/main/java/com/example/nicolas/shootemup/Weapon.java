@@ -23,8 +23,8 @@ public class Weapon {
     private int shotPower;
     private int shotSpeed;
 
-    private int yBound;
-    private int xBound;
+    private static int yBound;
+    private static int xBound;
 
 
     public Weapon(TypeWeapon typeWeapon, Ship owner) {
@@ -61,6 +61,7 @@ public class Weapon {
             }
             else {
                 dirY = -1;
+                yOffset = -5;
                 firedByNpc = false;
             }
             toAdd.add(new Shoot(new Collider(owner.getX(),owner.getY()-owner.getBitmap().getHeight(),0,0)
@@ -71,10 +72,10 @@ public class Weapon {
     }
 
     public void setxBound(int xBound) {
-        this.xBound = xBound;
+        Weapon.xBound = xBound;
     }
 
     public void setyBound(int yBound) {
-        this.yBound = yBound;
+        Weapon.yBound = yBound;
     }
 }

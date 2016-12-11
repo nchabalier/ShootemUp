@@ -5,6 +5,8 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Vincent on 19/11/2016.
@@ -26,6 +28,7 @@ public class ShipPNJ extends Ship {
         this.bitmap = Bitmap.createBitmap(this.bitmap,0, 0,
                 this.bitmap.getWidth(),this.bitmap.getHeight(),
                 matrixRotation,false);
+        isNpc = true;
     }
 
     public SteeringBehaviour getBehavior() {
@@ -34,6 +37,14 @@ public class ShipPNJ extends Ship {
 
     @Override
     public void update(List<GameEntity> listEntities, List<GameEntity> toDelete, List<GameEntity> toAdd) {
+        if(isOutOfBounds()) {
+            Random rand = new Random();
+
+            int randomX = rand.nextInt((xBound-bitmap.getWidth()) + 1);
+            setY(0);
+            setX(randomX);
+        }
+
         for(GameEntity entity : listEntities){
             if(entity.collider != null) {
                 collider.isColliding(entity.collider, toDelete);

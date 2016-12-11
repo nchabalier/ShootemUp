@@ -25,21 +25,24 @@ public class Collider {
         this.height = height;
     }
 
+    public Collider(int x, int y, int width, int height,GameEntity owner) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.owner = owner;
+    }
+
     public void isColliding(Collider other, List<GameEntity> toDelete){
 
-        if(other==this)
-            return;
+        if(other!=this && !(owner.isNpc && other.owner.isNpc)) {
 
-        if(owner instanceof Shoot && other.owner instanceof Shoot){
-            if(((Shoot) owner).isFiredByNPC() && ((Shoot) other.owner).isFiredByNPC())
-                return;
+            int otherX = other.x;
+            int otherY = other.y;
+
+            if (!((x + width <= otherX) || (x >= otherX + other.width) || (y + height <= otherY) || (y >= otherY + other.height)))
+                owner.onCollision(toDelete, other.owner);
         }
-
-        int otherX = other.x;
-        int otherY = other.y;
-
-        if(!((x+width<otherX)||(x>otherX+other.width) || (y+height<otherY)||(y>otherY+other.height)))
-            owner.onCollision(toDelete,other.owner );
 
     }
 

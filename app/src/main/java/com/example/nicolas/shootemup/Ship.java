@@ -20,12 +20,16 @@ public class Ship extends GameEntity {
     protected boolean invincible;
     protected int protectionStartTime;
 
+    private int speed;
+    private int point;
+
     Ship(Bitmap bitmap, int x, int y) {
-        super(new Point(x,y),bitmap,new Collider(x,y,bitmap.getWidth(),bitmap.getHeight()),0 ,0);
+        super(new Point(x,y),bitmap,new Collider(x,y,bitmap.getWidth(),bitmap.getHeight()));
         activeWeapon = new Weapon(TypeWeapon.BASE,this);
         collider.setOwner(this);
         this.healthPoint =1;
         this.currentHealth = this.healthPoint;
+        speed = 10;
     }
 
     @Override
@@ -47,6 +51,10 @@ public class Ship extends GameEntity {
         collider.setY(py);
     }
 
+    public void setPoint(int point) {
+        this.point = point;
+    }
+
     public int getX() {
         return position.x;
     }
@@ -55,18 +63,34 @@ public class Ship extends GameEntity {
         return position.y;
     }
 
-    @Override
     public void setyBound(int yBound) {
-        super.setyBound(yBound);
+        GameEntity.yBound = yBound;
         activeWeapon.setyBound(yBound);
     }
 
-    @Override
     public void setxBound(int xBound) {
-        super.setxBound(xBound);
+        GameEntity.xBound = xBound;
         activeWeapon.setxBound(xBound);
     }
 
+    public void move(){
+        int direction;
+        int distanceToPoint;
+
+        if(position.x > point){
+            direction=-1;
+            distanceToPoint = position.x-point;
+        } else {
+            direction=1;
+            distanceToPoint = point - position.x;
+        }
+
+        if(distanceToPoint > speed){
+            setX(position.x+direction*speed);
+        }
+        else
+            setX(point);
+    }
     @Override
     public void update(List<GameEntity> listEntities, List<GameEntity> toDelete, List<GameEntity> toAdd) {
 
@@ -76,6 +100,9 @@ public class Ship extends GameEntity {
                 collider.isColliding(entity.collider, toDelete);
             }
         }
+
+        if(!toDelete.contains(this))
+            move();
     }
 
     @Override
