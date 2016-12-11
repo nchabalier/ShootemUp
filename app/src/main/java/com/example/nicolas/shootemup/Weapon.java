@@ -56,7 +56,7 @@ public class Weapon {
 
             if(owner instanceof ShipPNJ){
                 dirY = 1;
-                yOffset = ((ShipPNJ) owner).bitmap.getHeight()+5;
+                yOffset = ((ShipPNJ) owner).bitmap.getHeight()+((ShipPNJ) owner).getBehavior().getSpeed();
                 firedByNpc = true;
             }
             else {

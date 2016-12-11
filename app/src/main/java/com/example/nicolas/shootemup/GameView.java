@@ -81,7 +81,7 @@ public class GameView extends SurfaceView implements Runnable {
 //        shoots = new ArrayList<Shoot>();
 //        enemiesShips = new ArrayList<Ship>();
 
-        Bitmap playerShipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
+        Bitmap playerShipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.mship1);
         Ship playerShip = new Ship(playerShipBitmap, 0, 775);
 
         gameEntities.add(playerShip);
@@ -100,6 +100,7 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         ShipPNJ testNpc;
+        Bitmap bitmapNPC;
 
 
         try {

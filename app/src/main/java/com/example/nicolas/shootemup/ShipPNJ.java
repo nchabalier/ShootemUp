@@ -1,6 +1,7 @@
 package com.example.nicolas.shootemup;
 
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.Point;
 
 import java.util.List;
@@ -16,8 +17,19 @@ public class ShipPNJ extends Ship {
 
     public ShipPNJ(Point position, Bitmap bitmap, int coin) {
         super(bitmap,position.x,position.y);
+
+        Matrix matrixRotation = new Matrix();
         this.behavior = new SteeringBehaviour(this,"Straight");
         this.coin = coin;
+
+        matrixRotation.setRotate(180);
+        this.bitmap = Bitmap.createBitmap(this.bitmap,0, 0,
+                this.bitmap.getWidth(),this.bitmap.getHeight(),
+                matrixRotation,false);
+    }
+
+    public SteeringBehaviour getBehavior() {
+        return behavior;
     }
 
     @Override
