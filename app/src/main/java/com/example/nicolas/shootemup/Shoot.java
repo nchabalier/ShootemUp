@@ -13,12 +13,12 @@ import java.util.List;
  */
 
 public class Shoot extends GameEntity {
-    private int dirX;                   //between -1 and 1
-    private int dirY;                   //between -1 and 1
-    private int speed;
-    private int power;
-    private static int RADIUS = 5;
-    private boolean firedByNPC;
+    protected int dirX;                   //between -1 and 1
+    protected int dirY;                   //between -1 and 1
+    protected int speed;
+    protected int power;
+    protected static int RADIUS = 5;
+    protected boolean firedByNPC;
 
     public Shoot(Collider collider, Bitmap bitmap, Point position, int dirX, int dirY, int speed, int power, int xBound, int yBound, Boolean firedByNpc) {
         super(position,bitmap,collider,xBound ,yBound );
@@ -35,6 +35,9 @@ public class Shoot extends GameEntity {
         collider.setX(position.x);
         position.y += (speed * dirY);
         collider.setY(position.y);
+    }
+
+    public void updateDirection(List<GameEntity> listEntities) {
     }
 
     @Override
@@ -78,6 +81,8 @@ public class Shoot extends GameEntity {
             }
         }
         if(!toDelete.contains(this)){
+            //Update direction is used for missile
+            updateDirection(listEntities);
             move();
         }
         if(isOutOfBounds())
