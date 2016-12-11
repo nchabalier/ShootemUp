@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -44,6 +45,12 @@ public class GameView extends SurfaceView implements Runnable {
 
     // Declare an object of type Bitmap
     Bitmap bitmapBob;
+    Bitmap commonEnnemyBitmap;
+
+    Time timeMesuring;
+    long gamebegin;
+
+    Context context;
 
 
     //---------------------------------------
@@ -61,6 +68,10 @@ public class GameView extends SurfaceView implements Runnable {
         // How kind.
         super(context);
 
+        this.context = context;
+
+        timeMesuring = new Time();
+
         //Initialize entities list
         gameEntities = new ArrayList<GameEntity>();
 
@@ -74,7 +85,7 @@ public class GameView extends SurfaceView implements Runnable {
         //-----------------------------
 
         backGround = BitmapFactory.decodeResource(context.getResources(),
-                R.drawable.space3);
+                R.drawable.space4);
         movingBackground = new MovingBackground2(backGround);
 
 
@@ -89,8 +100,8 @@ public class GameView extends SurfaceView implements Runnable {
         // Initialize player and it's Attributes
         player = new Player(playerShip,0);
 
-        //Add enemies for test
-//        enemiesShips.add(new Ship(playerShipBitmap, 300, 0, "Straight"));
+        //configure bitmap for ennemies
+        commonEnnemyBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
 
         // Set our boolean to true - game on!
         playing = true;
@@ -100,8 +111,9 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         ShipPNJ testNpc;
-        Bitmap bitmapNPC;
 
+        timeMesuring.setToNow();
+        gamebegin = timeMesuring.toMillis(true);
 
         try {
             Thread.sleep(1000);
@@ -113,9 +125,7 @@ public class GameView extends SurfaceView implements Runnable {
         player.getPlayerShip().setxBound(getRight());
         player.getPlayerShip().setyBound(getBottom());
 
-        testNpc = new ShipPNJ(new Point(20,20),player.getPlayerShip().getBitmap(),10);
-        testNpc.setxBound(getRight());
-        testNpc.setyBound(getBottom());
+        testNpc = new ShipPNJ(new Point(20,20),commonEnnemyBitmap,10);
 
         gameEntities.add(testNpc);
 
@@ -142,12 +152,21 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
+    // Method to update the score depending on the time spent
+    // in game
+    public void updateScore(){
+        timeMesuring.setToNow();
+        player.score += (timeMesuring.toMillis(true)-gamebegin)/60000;
+    }
+
     // Everything that needs to be updated goes in here
     // In later projects we will have dozens (arrays) of objects.
     // We will also do other things like collision detection.
     public void update() {
         List<GameEntity> toDelete = new ArrayList<GameEntity>();
         List<GameEntity> toAdd = new ArrayList<GameEntity>();
+
+        updateScore();
 
         for(GameEntity entity : gameEntities) {
             entity.update(gameEntities,toDelete,toAdd );
@@ -215,7 +234,7 @@ public class GameView extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
         int x = (int)motionEvent.getX();
-        player.getPlayerShip().setX(x-25);
+        player.getPlayerShip().setPoint(x-25);
         invalidate();
         return true;
 

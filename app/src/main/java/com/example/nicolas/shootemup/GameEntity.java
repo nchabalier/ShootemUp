@@ -16,20 +16,23 @@ public class GameEntity  {
 
     protected Bitmap bitmap;
     protected Collider collider;
+    protected boolean isNpc;
 
-    protected int xBound;
-    protected int yBound;
+    protected static int xBound;
+    protected static int yBound;
 
-    public GameEntity(Point position, Bitmap bitmap, Collider collider, int xBound, int yBound) {
+    public GameEntity(Point position, Bitmap bitmap, Collider collider) {
         this.position = position;
         this.bitmap = bitmap;
         this.collider = collider;
-        this.xBound = xBound;
-        this.yBound = yBound;
     }
 
     public Bitmap getBitmap() {
         return bitmap;
+    }
+
+    public boolean isNpc() {
+        return isNpc;
     }
 
     public void update(List<GameEntity> listEntities, List<GameEntity> toDelete,
@@ -48,11 +51,12 @@ public class GameEntity  {
 
     }
 
-    public void setxBound(int xBound) {
-        this.xBound = xBound;
-    }
+    protected boolean isOutOfBounds(){
+        boolean outOfBounds = false;
 
-    public void setyBound(int yBound) {
-        this.yBound = yBound;
+        if(position.x <0 || position.y <0 || position.x > xBound || position.y > yBound)
+            outOfBounds = true;
+
+        return outOfBounds;
     }
 }
