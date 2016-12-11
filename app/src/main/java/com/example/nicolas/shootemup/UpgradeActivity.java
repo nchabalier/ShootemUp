@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 /**
  * Created by Nicolas on 04/11/2016.
@@ -15,6 +18,7 @@ public class UpgradeActivity extends Activity{
     private Button buttonReturn;
     private Button buttonBuyCoins;
     private Button buttonPlay;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,5 +51,19 @@ public class UpgradeActivity extends Activity{
             }
         });
 
+        listView = (ListView) findViewById(R.id.upgradeListView);
+        UpgradeAdapter adapter = new UpgradeAdapter(this, generateData());
+        listView.setAdapter(adapter);
+
+    }
+
+    private ArrayList<UpgradeItem> generateData(){
+        ArrayList<UpgradeItem> items = new ArrayList<UpgradeItem>();
+        items.add(new UpgradeItem(0, "Increase ship speed","1000 coins"));
+        items.add(new UpgradeItem(1, "Increase shoot speed","2000 coins"));
+        items.add(new UpgradeItem(2, "Double shoots","3000 coins"));
+        items.add(new UpgradeItem(3, "Missile","4000 coins"));
+
+        return items;
     }
 }
