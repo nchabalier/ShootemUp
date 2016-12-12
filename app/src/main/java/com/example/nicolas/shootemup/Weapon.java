@@ -37,6 +37,12 @@ public class Weapon {
                 shotPower = 1;
                 shotSpeed = 15;
                 break;
+            case BAZOOKA:
+                cooldown = 2000;
+                shotPower = 2;
+                shotSpeed = 15;
+                typeOfShoot = TypeOfShoot.SEARCHINGMISSLE;
+                break;
         }
     }
 
@@ -64,9 +70,14 @@ public class Weapon {
                 yOffset = -5;
                 firedByNpc = false;
             }
-            toAdd.add(new Shoot(new Collider(owner.getX(),owner.getY()-owner.getBitmap().getHeight(),0,0)
-                    ,null,new Point(owner.getX()+owner.bitmap.getWidth()/2,owner.getY()+yOffset),0,dirY,
-                    shotSpeed,shotPower,xBound ,yBound, firedByNpc));
+            if(typeOfShoot==TypeOfShoot.SEARCHINGMISSLE)
+                toAdd.add(new Missile(new Collider(owner.getX(),owner.getY()-owner.getBitmap().getHeight(),0,0)
+                        ,null,new Point(owner.getX()+owner.bitmap.getWidth()/2,owner.getY()+yOffset),0,dirY,
+                        shotSpeed,shotPower,xBound ,yBound, firedByNpc));
+            else
+                toAdd.add(new Shoot(new Collider(owner.getX(),owner.getY()-owner.getBitmap().getHeight(),0,0)
+                        ,null,new Point(owner.getX()+owner.bitmap.getWidth()/2,owner.getY()+yOffset),0,dirY,
+                        shotSpeed,shotPower,xBound ,yBound, firedByNpc));
             timeLastShotFired=mili;
         }
     }

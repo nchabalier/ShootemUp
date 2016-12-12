@@ -21,6 +21,9 @@ public class ScoreBoardDAO {
     public static final String KEY = "id";
     public static final String NAME = "name";
     public static final String SCORE = "score";
+    public static final String SHOTSPEED = "shot speed";
+    public static final String SHIPSPEED = "ship speed";
+    public static final String WEAPONTYPE = "weapon type";
 
     public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME + " TEXT, " + SCORE + " INTEGER);";
     public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
@@ -68,6 +71,9 @@ public class ScoreBoardDAO {
             contentValues.put(KEY, scoreBoard.getId());
             contentValues.put(NAME, scoreBoard.getName());
             contentValues.put(SCORE, scoreBoard.getScore());
+            contentValues.put(SHOTSPEED, scoreBoard.getShootSpeed());
+            contentValues.put(SHIPSPEED, scoreBoard.getShipSpeed());
+            contentValues.put(WEAPONTYPE, scoreBoard.getWeaponType().name());
 
             // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
             mDb.insertOrThrow(TABLE_NAME, null, contentValues);
@@ -96,6 +102,19 @@ public class ScoreBoardDAO {
                     scoreBoard.setId(cursor.getLong(cursor.getColumnIndex(KEY)));
                     scoreBoard.setName(cursor.getString(cursor.getColumnIndex(NAME)));
                     scoreBoard.setScore(cursor.getLong(cursor.getColumnIndex(SCORE)));
+                    scoreBoard.setShootSpeed(cursor.getInt(cursor.getColumnIndex(SHOTSPEED)));
+                    scoreBoard.setShipSpeed(cursor.getInt(cursor.getColumnIndex(SHIPSPEED)));
+                    switch (cursor.getString(cursor.getColumnIndex(WEAPONTYPE))){
+                        case "BASE":
+                            scoreBoard.setWeaponType(TypeWeapon.BASE);
+                            break;
+                        case "BAZOOKA":
+                            scoreBoard.setWeaponType(TypeWeapon.BAZOOKA);
+                            break;
+                        case "GATTELING":
+                            scoreBoard.setWeaponType(TypeWeapon.GATTELING);
+                            break;
+                    }
 
                     scores.add(scoreBoard);
 
@@ -126,10 +145,10 @@ public class ScoreBoardDAO {
     }
 
     public void createDefaultScoreBoard() {
-        this.addScore(new ScoreBoard(1, "Chab's", 999999999));
-        this.addScore(new ScoreBoard(2, "Chuck Norris", 999999998));
-        this.addScore(new ScoreBoard(3, "Bob", 100000));
-        this.addScore(new ScoreBoard(4, "The boss", 12345));
+        this.addScore(new ScoreBoard(1, "Chab's", 999999999,999,99,TypeWeapon.BAZOOKA));
+        this.addScore(new ScoreBoard(2, "Chuck Norris", 999999998,998,98,TypeWeapon.BAZOOKA));
+        this.addScore(new ScoreBoard(3, "Bob", 100000,15,10,TypeWeapon.BASE));
+        this.addScore(new ScoreBoard(4, "The boss", 12345,10,10,TypeWeapon.BASE));
     }
 
 
