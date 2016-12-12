@@ -2,7 +2,9 @@ package com.example.nicolas.shootemup;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -25,11 +27,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ScoreBoardDAO scoreBoardDAO = new ScoreBoardDAO(getBaseContext());
-        scoreBoardDAO.open();
-        scoreBoardDAO.dropTable();
-        scoreBoardDAO.createTableIfNotExist();
-        scoreBoardDAO.close();
+        //Created score board data base if not exist
+        if(!isDataBaseCreated()) {
+            createDataBase();
+        }
 
         editPseudo = (EditText) findViewById(R.id.editPseudo);
 
@@ -80,6 +81,24 @@ public class MainActivity extends Activity {
                 startActivity(scoreboardActivityIntent);
             }
         });
+    }
 
+    public boolean isDataBaseCreated() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        return prefs.getBoolean("dataBaseCreated", false);
+    }
+
+    public void createDataBase() {
+        ScoreBoardDAO scoreBoardDAO = new ScoreBoardDAO(getBaseContext());
+        scoreBoardDAO.open();
+        scoreBoardDAO.dropTable();
+        scoreBoardDAO.createTableIfNotExist();
+        scoreBoardDAO.createDefaultScoreBoard();
+        scoreBoardDAO.close();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("dataBaseCreated", true);
+        editor.commit();
     }
 }
