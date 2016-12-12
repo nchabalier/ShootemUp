@@ -27,7 +27,7 @@ public class ScoreBoardDAO {
     public static final String WEAPONTYPE = "weaponType";
 
     public static final String TABLE_CREATE
-            = " CREATE TABLE " + TABLE_NAME + " (" + NAME + " TEXT , " + SCORE + " INTEGER," + COIN + " INTEGER," + SHOTSPEED +" INTEGER,"
+            = " CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + NAME + " TEXT , " + SCORE + " INTEGER," + COIN + " INTEGER," + SHOTSPEED +" INTEGER,"
             + SHIPSPEED + " INTEGER," + WEAPONTYPE + " TEXT, PRIMARY KEY ( " +NAME +"));";
     public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME ;
 
@@ -59,7 +59,7 @@ public class ScoreBoardDAO {
 
         String name = scoreBoard.getName();
 
-        //if(getCount(name) == 0) {
+        if(getCount(name) == 0) {
             ContentValues contentValues = new ContentValues();
 //        contentValues.put(KEY, scoreBoard.getId());
             contentValues.put(NAME, scoreBoard.getName());
@@ -68,8 +68,8 @@ public class ScoreBoardDAO {
             contentValues.put(SHOTSPEED, scoreBoard.getShootSpeed());
             contentValues.put(SHIPSPEED, scoreBoard.getShipSpeed());
             contentValues.put(WEAPONTYPE, scoreBoard.getWeaponType().name());
-            mDb.insertWithOnConflict(TABLE_NAME, null,contentValues, SQLiteDatabase.CONFLICT_IGNORE);
-        //}
+            mDb.insert(TABLE_NAME, null,contentValues);
+        }
 
     }
 
@@ -102,7 +102,7 @@ public class ScoreBoardDAO {
     public int getCount(String name) {
         Cursor c = null;
         try {
-            String query = "select count(*) from " + TABLE_NAME + " where " + NAME + " = " + name;
+            String query = "select count(*) from " + TABLE_NAME + " where " + NAME + " = ?";
             c = mDb.rawQuery(query, new String[] {name});
             if (c.moveToFirst()) {
                 return c.getInt(0);
@@ -114,7 +114,7 @@ public class ScoreBoardDAO {
                 c.close();
             }
             if (mDb != null) {
-                mDb.close();
+                //mDb.close();
             }
         }
     }
@@ -186,10 +186,12 @@ public class ScoreBoardDAO {
         this.add(new ScoreBoard(4, "The boss", 12345,0,10,10,TypeWeapon.BASE));
     }
 
-
-    public void delete(long id) {
-        mDb.execSQL(TABLE_DROP);
+    public void createTableIfNotExist() {
         mDb.execSQL(TABLE_CREATE);
+    }
+
+    public void dropTable() {
+        mDb.execSQL(TABLE_DROP);
     }
 
 

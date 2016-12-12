@@ -23,6 +23,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ScoreBoardDAO scoreBoardDAO = new ScoreBoardDAO(getBaseContext());
+        scoreBoardDAO.open();
+        scoreBoardDAO.dropTable();
+        scoreBoardDAO.createTableIfNotExist();
+        scoreBoardDAO.close();
+
         editPseudo = (EditText) findViewById(R.id.editPseudo);
 
         buttonOptions = (ImageButton) findViewById(R.id.buttonOptions);

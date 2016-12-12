@@ -35,7 +35,8 @@ public class ScoreBoardActivity extends Activity {
 
         scoreBoardDAO = new ScoreBoardDAO(getBaseContext());
         scoreBoardDAO.open();
-        //scoreBoardDAO.delete(0);
+        //scoreBoardDAO.dropTable();
+        //scoreBoardDAO.createTableIfNotExist();
         //scoreBoardDAO.deleteAllScores();
         scoreBoardDAO.createDefaultScoreBoard();
 
