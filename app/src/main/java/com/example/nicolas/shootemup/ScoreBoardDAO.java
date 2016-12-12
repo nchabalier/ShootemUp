@@ -27,9 +27,8 @@ public class ScoreBoardDAO {
     public static final String WEAPONTYPE = "weaponType";
 
     public static final String TABLE_CREATE
-            = " CREATE TABLE " + TABLE_NAME + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + NAME + " TEXT, " + SCORE + " INTEGER," + COIN + " INTEGER," + SHOTSPEED +" INTEGER,"
-            + SHIPSPEED + " INTEGER," + WEAPONTYPE + " TEXT);";
+            = " CREATE TABLE " + TABLE_NAME + " (" + NAME + " TEXT , " + SCORE + " INTEGER," + COIN + " INTEGER," + SHOTSPEED +" INTEGER,"
+            + SHIPSPEED + " INTEGER," + WEAPONTYPE + " TEXT, PRIMARY KEY ( " +NAME +"));";
     public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME ;
 
 
@@ -57,15 +56,21 @@ public class ScoreBoardDAO {
     }
 
     public void add(ScoreBoard scoreBoard) {
-        ContentValues contentValues = new ContentValues();
+
+        String name = scoreBoard.getName();
+
+        //if(getCount(name) == 0) {
+            ContentValues contentValues = new ContentValues();
 //        contentValues.put(KEY, scoreBoard.getId());
-        contentValues.put(NAME, scoreBoard.getName());
-        contentValues.put(SCORE, scoreBoard.getScore());
-        contentValues.put(COIN,scoreBoard.getCoin());
-        contentValues.put(SHOTSPEED, scoreBoard.getShootSpeed());
-        contentValues.put(SHIPSPEED, scoreBoard.getShipSpeed());
-        contentValues.put(WEAPONTYPE, scoreBoard.getWeaponType().name());
-        mDb.insert(TABLE_NAME, null,contentValues);
+            contentValues.put(NAME, scoreBoard.getName());
+            contentValues.put(SCORE, scoreBoard.getScore());
+            contentValues.put(COIN,scoreBoard.getCoin());
+            contentValues.put(SHOTSPEED, scoreBoard.getShootSpeed());
+            contentValues.put(SHIPSPEED, scoreBoard.getShipSpeed());
+            contentValues.put(WEAPONTYPE, scoreBoard.getWeaponType().name());
+            mDb.insertWithOnConflict(TABLE_NAME, null,contentValues, SQLiteDatabase.CONFLICT_IGNORE);
+        //}
+
     }
 
     public void addScore(ScoreBoard scoreBoard) {
@@ -76,7 +81,7 @@ public class ScoreBoardDAO {
         try {
 
             ContentValues contentValues = new ContentValues();
-//            contentValues.put(KEY, scoreBoard.getId());
+            //contentValues.put(KEY, scoreBoard.getId());
             contentValues.put(NAME, scoreBoard.getName());
             contentValues.put(SCORE, scoreBoard.getScore());
             contentValues.put(COIN,scoreBoard.getCoin());
@@ -94,6 +99,26 @@ public class ScoreBoardDAO {
         }
     }
 
+    public int getCount(String name) {
+        Cursor c = null;
+        try {
+            String query = "select count(*) from " + TABLE_NAME + " where " + NAME + " = " + name;
+            c = mDb.rawQuery(query, new String[] {name});
+            if (c.moveToFirst()) {
+                return c.getInt(0);
+            }
+            return 0;
+        }
+        finally {
+            if (c != null) {
+                c.close();
+            }
+            if (mDb != null) {
+                mDb.close();
+            }
+        }
+    }
+
     public List<ScoreBoard> getAllScores() {
         List<ScoreBoard> scores = new ArrayList<>();
 
@@ -108,7 +133,7 @@ public class ScoreBoardDAO {
                 do {
 
                     ScoreBoard scoreBoard = new ScoreBoard();
-                    scoreBoard.setId(cursor.getLong(cursor.getColumnIndex(KEY)));
+                    //scoreBoard.setId(cursor.getLong(cursor.getColumnIndex(KEY)));
                     scoreBoard.setName(cursor.getString(cursor.getColumnIndex(NAME)));
                     scoreBoard.setScore(cursor.getLong(cursor.getColumnIndex(SCORE)));
                     scoreBoard.setCoin(cursor.getInt(cursor.getColumnIndex(COIN)));
@@ -155,10 +180,10 @@ public class ScoreBoardDAO {
     }
 
     public void createDefaultScoreBoard() {
-        this.addScore(new ScoreBoard(1, "Chab's", 999999999,99999,999,99,TypeWeapon.BAZOOKA));
-        this.addScore(new ScoreBoard(2, "Chuck Norris", 999999998,99998,998,98,TypeWeapon.BAZOOKA));
-        this.addScore(new ScoreBoard(3, "Bob", 100000,0,15,10,TypeWeapon.BASE));
-        this.addScore(new ScoreBoard(4, "The boss", 12345,0,10,10,TypeWeapon.BASE));
+        this.add(new ScoreBoard(1, "Chab's", 999999999,99999,999,99,TypeWeapon.BAZOOKA));
+        this.add(new ScoreBoard(2, "Chuck Norris", 999999998,99998,998,98,TypeWeapon.BAZOOKA));
+        this.add(new ScoreBoard(3, "Bob", 100000,0,15,10,TypeWeapon.BASE));
+        this.add(new ScoreBoard(4, "The boss", 12345,0,10,10,TypeWeapon.BASE));
     }
 
 
