@@ -14,6 +14,7 @@ import android.view.SurfaceView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Nicolas on 05/11/2016.
@@ -61,6 +62,7 @@ public class GameView extends SurfaceView implements Runnable {
     private MovingBackground2 movingBackground;
     private int ennemiesKilled;
     private int cycleNumber;
+    private long timeLastEnnemyGenerated;
 
     // When the we initialize (call new()) on gameView
     // This special constructor method runs
@@ -142,8 +144,6 @@ public class GameView extends SurfaceView implements Runnable {
 
     // Method used to setup the game correctly
     private void setup(){
-        ShipPNJ testNpc;
-
         timeMesuring.setToNow();
         gamebegin = timeMesuring.toMillis(true);
 
@@ -156,15 +156,23 @@ public class GameView extends SurfaceView implements Runnable {
         player.getPlayerShip().setY(getBottom()-player.getPlayerShip().getBitmap().getHeight());
         player.getPlayerShip().setxBound(getRight());
         player.getPlayerShip().setyBound(getBottom());
-
-        testNpc = new ShipPNJ(new Point(20,20),commonEnnemyBitmap,10);
-
-        gameEntities.add(testNpc);
     }
 
     //Random Generation of ennemies
     private void randomEnnemyGenerator(){
+        long currentTime;
+        Random rand = new Random();
+        int randomX = rand.nextInt((getWidth()-commonEnnemyBitmap.getWidth()) + 1);
 
+        timeMesuring.setToNow();
+        currentTime = timeMesuring.toMillis(true);
+
+        if(currentTime-timeLastEnnemyGenerated > 1000/cycleNumber){
+            if(ennemiesKilled <20*cycleNumber) {
+                gameEntities.add(new ShipPNJ(new Point(randomX, 0), commonEnnemyBitmap, 10));
+                timeLastEnnemyGenerated = currentTime;
+            }
+        }
 
 
     }
@@ -184,6 +192,7 @@ public class GameView extends SurfaceView implements Runnable {
         List<GameEntity> toAdd = new ArrayList<GameEntity>();
 
         updateScore();
+        randomEnnemyGenerator();
 
         for(GameEntity entity : gameEntities) {
             entity.update(gameEntities,toDelete,toAdd );
@@ -194,6 +203,13 @@ public class GameView extends SurfaceView implements Runnable {
         }
 
         for(GameEntity entity : toDelete){
+            if(entity instanceof ShipPNJ){
+                ennemiesKilled+=1;
+                ((ShipPNJ) entity).onDestroy(player);
+            }
+            else if(this.equals(player.getPlayerShip())){
+
+            }
             entity.onDestroy();
             gameEntities.remove(entity);
         }

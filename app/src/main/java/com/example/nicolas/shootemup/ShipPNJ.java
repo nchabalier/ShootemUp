@@ -55,4 +55,8 @@ public class ShipPNJ extends Ship {
         }
         activeWeapon.update(listEntities,toAdd);
     }
+
+    public void onDestroy(Player player){
+        player.setCoin(player.getCoin()+coin);
+    }
 }
