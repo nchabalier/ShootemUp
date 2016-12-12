@@ -164,7 +164,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     //Random Generation of ennemies
     private void randomEnnemyGenerator(){
-        
+
 
 
     }
