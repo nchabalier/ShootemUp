@@ -9,6 +9,7 @@ public class ScoreBoard {
     private long id;
     private String name;
     private long score;
+    private int coin;
     private int shootSpeed;
     private int shipSpeed;
     private TypeWeapon weaponType;
@@ -17,17 +18,11 @@ public class ScoreBoard {
         super();
     }
 
-    public ScoreBoard(long id, String name, long score) {
-        super();
+    public ScoreBoard(long id, String name, long score, int coin, int shootSpeed, int shipSpeed, TypeWeapon weaponType) {
         this.id = id;
         this.name = name;
         this.score = score;
-    }
-
-    public ScoreBoard(long id, String name, long score, int shootSpeed, int shipSpeed, TypeWeapon weaponType) {
-        this.id = id;
-        this.name = name;
-        this.score = score;
+        this.coin = coin;
         this.shootSpeed = shootSpeed;
         this.shipSpeed = shipSpeed;
         this.weaponType = weaponType;
@@ -79,5 +74,13 @@ public class ScoreBoard {
 
     public void setWeaponType(TypeWeapon weaponType) {
         this.weaponType = weaponType;
+    }
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
     }
 }
