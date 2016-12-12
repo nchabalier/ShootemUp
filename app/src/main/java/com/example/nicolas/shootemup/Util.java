@@ -12,6 +12,6 @@ public class Util {
     }
 
     public static double dist2(Point point1, Point point2) {
-        return (point1.x-point2.x)*(point1.y-point2.y);
+        return (point1.x-point2.x)*(point1.x-point2.x)+(point1.y-point2.y)*(point1.y-point2.y);
     }
 }

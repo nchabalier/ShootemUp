@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 /**
  * Created by Nicolas on 04/11/2016.
@@ -11,7 +12,7 @@ import android.widget.Button;
 
 public class StoreActivity extends Activity{
 
-    private Button buttonReturn;
+    private ImageButton buttonReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +20,7 @@ public class StoreActivity extends Activity{
         setContentView(R.layout.activity_store);
 
 
-        buttonReturn = (Button) findViewById(R.id.buttonReturn);
+        buttonReturn = (ImageButton) findViewById(R.id.buttonReturn);
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

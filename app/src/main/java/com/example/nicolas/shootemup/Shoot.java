@@ -13,8 +13,8 @@ import java.util.List;
  */
 
 public class Shoot extends GameEntity {
-    protected int dirX;                   //between -1 and 1
-    protected int dirY;                   //between -1 and 1
+    protected double dirX;                   //between -1 and 1
+    protected double dirY;                   //between -1 and 1
     protected int speed;
     protected int power;
     protected static int RADIUS = 5;

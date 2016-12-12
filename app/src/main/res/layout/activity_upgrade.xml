@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:id="@+id/activity_upgrade"
     android:background="#2D2D2D"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
@@ -14,7 +13,7 @@
         android:text="Upgrade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/White"
+        android:textColor="#ccd1d1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/textView2" />
@@ -23,7 +22,7 @@
         android:text="Best score :"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/White"
+        android:textColor="#ccd1d1"
         android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -34,7 +33,7 @@
         android:text="Last score :"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/White"
+        android:textColor="#ccd1d1"
         android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -45,7 +44,7 @@
         android:text="Total coins :"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/White"
+        android:textColor="#ccd1d1"
         android:layout_below="@+id/textView4"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -58,38 +57,40 @@
         android:layout_height="2dp"
         android:background="@android:color/darker_gray"/>
 
-    <Button
+    <ImageButton
         android:text="Return"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65sp"
+        android:layout_height="65sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:background="@drawable/return_button"
         android:id="@+id/buttonReturn" />
 
     <Button
         android:text="Buy coins"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/buttonBuyCoins" />
 
-    <Button
+    <ImageButton
         android:text="Play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
         android:layout_alignTop="@+id/buttonBuyCoins"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:background="@drawable/play_button2"
         android:id="@+id/buttonPlay" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/Silver"
+        android:background="#ccd1d1"
         android:layout_alignParentLeft="true"
-        android:layout_above="@+id/buttonReturn"
+        android:layout_above="@+id/buttonPlay"
         android:layout_below="@+id/textView5"
         android:id="@+id/upgradeListView" />
 

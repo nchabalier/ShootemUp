@@ -8,6 +8,7 @@
         android:id="@+id/upgradeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#34495e"
         android:textSize="20sp"
         android:paddingLeft="5dp">
     </TextView>
@@ -17,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/upgradeLabel"
+        android:textColor="#784212"
         android:textSize="12sp"
         android:paddingLeft="5dp">
     </TextView>

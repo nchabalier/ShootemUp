@@ -47,8 +47,8 @@ public class Missile extends Shoot {
             double dist = Util.dist(target.position, this.position);
             newDirX /= dist;
             newDirY /= dist;
-            dirX += newDirX;
-            dirX += newDirY;
+            dirX = (dirX + newDirX)/2;
+            dirY = (dirY + newDirY)/2;
         }
     }
 

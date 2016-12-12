@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -15,9 +16,9 @@ import java.util.ArrayList;
 
 public class UpgradeActivity extends Activity{
 
-    private Button buttonReturn;
+    private ImageButton buttonReturn;
     private Button buttonBuyCoins;
-    private Button buttonPlay;
+    private ImageButton buttonPlay;
     private ListView listView;
 
     @Override
@@ -25,7 +26,7 @@ public class UpgradeActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upgrade);
 
-        buttonReturn = (Button) findViewById(R.id.buttonReturn);
+        buttonReturn = (ImageButton) findViewById(R.id.buttonReturn);
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,7 +43,7 @@ public class UpgradeActivity extends Activity{
             }
         });
 
-        buttonPlay = (Button) findViewById(R.id.buttonPlay);
+        buttonPlay = (ImageButton) findViewById(R.id.buttonPlay);
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
