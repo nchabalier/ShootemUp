@@ -35,7 +35,7 @@ public class Collider {
 
     public void isColliding(Collider other, List<GameEntity> toDelete){
 
-        if(other!=this && !(owner.isNpc && other.owner.isNpc)) {
+        if(other!=this && !(owner.isNpc && other.owner.isNpc) && !(owner instanceof  Shoot && other.owner instanceof  Shoot)) {
 
             int otherX = other.x;
             int otherY = other.y;

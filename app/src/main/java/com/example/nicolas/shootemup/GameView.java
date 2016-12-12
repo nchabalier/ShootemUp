@@ -63,6 +63,7 @@ public class GameView extends SurfaceView implements Runnable {
     private int ennemiesKilled;
     private int cycleNumber;
     private long timeLastEnnemyGenerated;
+    private Boolean bossPhase;
 
     // When the we initialize (call new()) on gameView
     // This special constructor method runs
@@ -100,7 +101,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         Bitmap playerShipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.mship1);
         Ship playerShip = new Ship(playerShipBitmap, 100, 775);
-        playerShip.setActiveWeapon(new Weapon(TypeWeapon.BAZOOKA,playerShip));
+        playerShip.setActiveWeapon(new Weapon(TypeWeapon.GATTELING,playerShip));
 
         gameEntities.add(playerShip);
 
@@ -110,8 +111,11 @@ public class GameView extends SurfaceView implements Runnable {
         //configure bitmap for ennemies
         commonEnnemyBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
 
+        bossPhase=false;
+
         // Set our boolean to true - game on!
         playing = true;
+
 
     }
 
@@ -171,6 +175,8 @@ public class GameView extends SurfaceView implements Runnable {
             if(ennemiesKilled <20*cycleNumber) {
                 gameEntities.add(new ShipPNJ(new Point(randomX, 0), commonEnnemyBitmap, 10));
                 timeLastEnnemyGenerated = currentTime;
+            } else if (!bossPhase && ennemiesKilled >= 20*cycleNumber){
+
             }
         }
 

@@ -43,6 +43,12 @@ public class Weapon {
                 shotSpeed = 15;
                 typeOfShoot = TypeOfShoot.SEARCHINGMISSLE;
                 break;
+            case GATTELING:
+                cooldown = 500;
+                shotPower = 1;
+                shotSpeed = 20;
+                typeOfShoot = TypeOfShoot.DOUBLE;
+                break;
         }
     }
 
@@ -74,6 +80,14 @@ public class Weapon {
                 toAdd.add(new Missile(new Collider(owner.getX(),owner.getY()-owner.getBitmap().getHeight(),0,0)
                         ,null,new Point(owner.getX()+owner.bitmap.getWidth()/2,owner.getY()+yOffset),0,dirY,
                         shotSpeed,shotPower,xBound ,yBound, firedByNpc));
+            else if(typeOfShoot==TypeOfShoot.DOUBLE){
+                toAdd.add(new Shoot(new Collider(owner.getX(),owner.getY()-owner.getBitmap().getHeight(),0,0)
+                        ,null,new Point(owner.getX(),owner.getY()+yOffset),0,dirY,
+                        shotSpeed,shotPower,xBound ,yBound, firedByNpc));
+                toAdd.add(new Shoot(new Collider(owner.getX(),owner.getY()-owner.getBitmap().getHeight(),0,0)
+                        ,null,new Point(owner.getX()+owner.bitmap.getWidth(),owner.getY()+yOffset),0,dirY,
+                        shotSpeed,shotPower,xBound ,yBound, firedByNpc));
+            }
             else
                 toAdd.add(new Shoot(new Collider(owner.getX(),owner.getY()-owner.getBitmap().getHeight(),0,0)
                         ,null,new Point(owner.getX()+owner.bitmap.getWidth()/2,owner.getY()+yOffset),0,dirY,
