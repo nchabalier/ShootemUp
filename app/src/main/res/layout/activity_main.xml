@@ -62,4 +62,26 @@
         android:textColor="#ccd1d1"
         android:id="@+id/textView7"
         android:layout_alignParentRight="true" />
+
+    <TextView
+        android:text="Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView7"
+        android:layout_toLeftOf="@+id/buttonScore"
+        android:textColor="@color/White"
+        android:id="@+id/textView8" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Pseudo"
+        android:ems="10"
+        android:id="@+id/editPseudo"
+        android:textColor="@color/White"
+        android:background="#2D2D2D"
+        android:layout_below="@+id/textView7"
+        android:layout_alignRight="@+id/buttonFacebook"
+        android:layout_alignBottom="@+id/textView8"/>
 </RelativeLayout>
