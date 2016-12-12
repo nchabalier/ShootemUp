@@ -22,15 +22,15 @@ public class ScoreBoardDAO {
     public static final String NAME = "name";
     public static final String SCORE = "score";
     public static final String COIN = "coin";
-    public static final String SHOTSPEED = "shot speed";
-    public static final String SHIPSPEED = "ship speed";
-    public static final String WEAPONTYPE = "weapon type";
+    public static final String SHOTSPEED = "shotSpeed";
+    public static final String SHIPSPEED = "shipSpeed";
+    public static final String WEAPONTYPE = "weaponType";
 
     public static final String TABLE_CREATE
             = "CREATE TABLE " + TABLE_NAME + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + NAME + " TEXT, " + SCORE + " INTEGER," + COIN + "INTEGER," + SHOTSPEED +"INTEGER,"
+            + NAME + " TEXT, " + SCORE + " INTEGER," + COIN + " INTEGER," + SHOTSPEED +" INTEGER,"
             + SHIPSPEED + " INTEGER," + WEAPONTYPE + " TEXT);";
-    public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
+    public static final String TABLE_DROP =  "DROP TABLE IF EXISTS '" + TABLE_NAME + "';";
 
 
     private final static int VERSION = 1;
@@ -165,6 +165,7 @@ public class ScoreBoardDAO {
     public void delete(long id) {
         mDb.beginTransaction();
         mDb.execSQL(TABLE_DROP);
+        mDb.execSQL(TABLE_CREATE);
         mDb.endTransaction();
     }
 

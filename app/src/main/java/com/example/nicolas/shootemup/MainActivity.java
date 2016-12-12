@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
                 //If the current name is not in the data base we add it with a score equal to 0
                 ScoreBoardDAO scoreBoardDAO = new ScoreBoardDAO(getBaseContext());
                 scoreBoardDAO.open();
-                scoreBoardDAO.add(new ScoreBoard(1, name, 0));
+                scoreBoardDAO.add(new ScoreBoard(1, name, 0,0,15,10,TypeWeapon.BASE));
                 scoreBoardDAO.close();
 
                 //TODO: passer le "name" en extra dans l'intent
