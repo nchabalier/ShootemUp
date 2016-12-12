@@ -37,7 +37,7 @@ public class ScoreBoardActivity extends Activity {
         scoreBoardDAO.open();
         scoreBoardDAO.delete(0);
         //scoreBoardDAO.deleteAllScores();
-        //scoreBoardDAO.createDefaultScoreBoard();
+        scoreBoardDAO.createDefaultScoreBoard();
 
         List<ScoreBoard> scores = scoreBoardDAO.getAllScores();
         ScoreBoardAdapter adapter = new ScoreBoardAdapter(getBaseContext(), android.R.layout.simple_list_item_1, scores);

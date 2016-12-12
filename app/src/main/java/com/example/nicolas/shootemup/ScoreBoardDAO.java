@@ -27,10 +27,10 @@ public class ScoreBoardDAO {
     public static final String WEAPONTYPE = "weaponType";
 
     public static final String TABLE_CREATE
-            = "CREATE TABLE " + TABLE_NAME + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            = " CREATE TABLE " + TABLE_NAME + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + NAME + " TEXT, " + SCORE + " INTEGER," + COIN + " INTEGER," + SHOTSPEED +" INTEGER,"
             + SHIPSPEED + " INTEGER," + WEAPONTYPE + " TEXT);";
-    public static final String TABLE_DROP =  "DROP TABLE IF EXISTS '" + TABLE_NAME + "';";
+    public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME ;
 
 
     private final static int VERSION = 1;
@@ -58,7 +58,7 @@ public class ScoreBoardDAO {
 
     public void add(ScoreBoard scoreBoard) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY, scoreBoard.getId());
+//        contentValues.put(KEY, scoreBoard.getId());
         contentValues.put(NAME, scoreBoard.getName());
         contentValues.put(SCORE, scoreBoard.getScore());
         contentValues.put(COIN,scoreBoard.getCoin());
@@ -76,7 +76,7 @@ public class ScoreBoardDAO {
         try {
 
             ContentValues contentValues = new ContentValues();
-            contentValues.put(KEY, scoreBoard.getId());
+//            contentValues.put(KEY, scoreBoard.getId());
             contentValues.put(NAME, scoreBoard.getName());
             contentValues.put(SCORE, scoreBoard.getScore());
             contentValues.put(COIN,scoreBoard.getCoin());
@@ -163,10 +163,8 @@ public class ScoreBoardDAO {
 
 
     public void delete(long id) {
-        mDb.beginTransaction();
         mDb.execSQL(TABLE_DROP);
         mDb.execSQL(TABLE_CREATE);
-        mDb.endTransaction();
     }
 
 
