@@ -2,6 +2,7 @@ package com.example.nicolas.shootemup;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,7 @@ public class MainActivity extends Activity {
     private ImageButton buttonOptions;
     private ImageButton buttonUpdgrade;
     private Button buttonScore;
+    private ImageButton buttonFacebook;
     private EditText editPseudo;
 
     @Override
@@ -30,6 +32,17 @@ public class MainActivity extends Activity {
         scoreBoardDAO.close();
 
         editPseudo = (EditText) findViewById(R.id.editPseudo);
+
+        buttonFacebook = (ImageButton) findViewById(R.id.buttonFacebook);
+        buttonFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "http://www.facebook.com/login/";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
 
         buttonOptions = (ImageButton) findViewById(R.id.buttonOptions);
         buttonOptions.setOnClickListener(new View.OnClickListener() {
