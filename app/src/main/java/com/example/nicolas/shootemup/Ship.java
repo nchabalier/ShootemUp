@@ -73,6 +73,10 @@ public class Ship extends GameEntity {
         activeWeapon.setxBound(xBound);
     }
 
+    public void setActiveWeapon(Weapon activeWeapon) {
+        this.activeWeapon = activeWeapon;
+    }
+
     public void move(){
         int direction;
         int distanceToPoint;

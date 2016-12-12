@@ -59,6 +59,8 @@ public class GameView extends SurfaceView implements Runnable {
     private double time;
     private List<GameEntity> gameEntities;
     private MovingBackground2 movingBackground;
+    private int ennemiesKilled;
+    private int cycleNumber;
 
     // When the we initialize (call new()) on gameView
     // This special constructor method runs
@@ -71,6 +73,8 @@ public class GameView extends SurfaceView implements Runnable {
         this.context = context;
 
         timeMesuring = new Time();
+        ennemiesKilled=0;
+        cycleNumber = 1;
 
         //Initialize entities list
         gameEntities = new ArrayList<GameEntity>();
@@ -94,6 +98,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         Bitmap playerShipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.mship1);
         Ship playerShip = new Ship(playerShipBitmap, 100, 775);
+        playerShip.setActiveWeapon(new Weapon(TypeWeapon.BAZOOKA,playerShip));
 
         gameEntities.add(playerShip);
 
@@ -110,24 +115,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
-        ShipPNJ testNpc;
-
-        timeMesuring.setToNow();
-        gamebegin = timeMesuring.toMillis(true);
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        player.getPlayerShip().setY(getBottom()-player.getPlayerShip().getBitmap().getHeight());
-        player.getPlayerShip().setxBound(getRight());
-        player.getPlayerShip().setyBound(getBottom());
-
-        testNpc = new ShipPNJ(new Point(20,20),commonEnnemyBitmap,10);
-
-        gameEntities.add(testNpc);
+        setup();
 
         while (playing) {
 
@@ -149,6 +137,35 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
         }
+
+    }
+
+    // Method used to setup the game correctly
+    private void setup(){
+        ShipPNJ testNpc;
+
+        timeMesuring.setToNow();
+        gamebegin = timeMesuring.toMillis(true);
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        player.getPlayerShip().setY(getBottom()-player.getPlayerShip().getBitmap().getHeight());
+        player.getPlayerShip().setxBound(getRight());
+        player.getPlayerShip().setyBound(getBottom());
+
+        testNpc = new ShipPNJ(new Point(20,20),commonEnnemyBitmap,10);
+
+        gameEntities.add(testNpc);
+    }
+
+    //Random Generation of ennemies
+    private void randomEnnemyGenerator(){
+        
+
 
     }
 

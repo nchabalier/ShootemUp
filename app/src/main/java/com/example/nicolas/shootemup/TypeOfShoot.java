@@ -5,6 +5,6 @@ package com.example.nicolas.shootemup;
  */
 
 public enum TypeOfShoot {
-
+    SEARCHINGMISSLE,DOUBLE
 
 }
