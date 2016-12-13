@@ -1,6 +1,7 @@
 package com.example.nicolas.shootemup;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,7 +11,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.text.format.Time;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -96,7 +96,16 @@ public class GameView extends SurfaceView implements Runnable {
         // Load Bob from his .png file
         bitmapBob = BitmapFactory.decodeResource(this.getResources(), R.drawable.ship);
         //-----------------------------
-        bossBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.spacestation);
+
+        if((getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) ==
+                Configuration.SCREENLAYOUT_SIZE_LARGE
+                || (getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) ==
+                Configuration.SCREENLAYOUT_SIZE_XLARGE)
+            bossBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.spacestationlarge);
+        else
+            bossBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.spacestation);
 
         backGround = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.space4);
@@ -323,7 +332,8 @@ public class GameView extends SurfaceView implements Runnable {
             return true;
 
         int x = (int) motionEvent.getX();
-        player.getPlayerShip().setPoint(x - 25);
+
+        player.getPlayerShip().setPoint(x - player.getPlayerShip().bitmap.getWidth());
         invalidate();
         return true;
 
