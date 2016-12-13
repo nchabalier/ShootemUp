@@ -1,8 +1,10 @@
 package com.example.nicolas.shootemup;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.os.Vibrator;
 
 import java.util.List;
 
@@ -114,6 +116,9 @@ public class Ship extends GameEntity {
         if(hitter instanceof Shoot){
             Shoot shotHitting = (Shoot) hitter;
             currentHealth -= shotHitting.getPower();
+            if(!(this instanceof ShipPNJ)) {
+                GameActivity.vibrate();
+            }
         }
         else{
             currentHealth-=1;

@@ -1,9 +1,11 @@
 package com.example.nicolas.shootemup;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Vibrator;
 
 
 /**
@@ -13,6 +15,7 @@ import android.os.Bundle;
 public class GameActivity extends Activity{
 
     private GameView gameView;
+    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,8 @@ public class GameActivity extends Activity{
         gameView = new GameView(this);
         setContentView(gameView);
 
+        context = getBaseContext();
+
         //Get my current information (score, coins, information about ship, ...)
         Intent i = getIntent();
         ScoreBoard myScore = (ScoreBoard) i.getParcelableExtra("my_score");
@@ -29,7 +34,11 @@ public class GameActivity extends Activity{
 
     }
 
-
+    public static void vibrate() {
+        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 200 milliseconds
+        v.vibrate(200);
+    }
 
     // This method executes when the player starts the game
     @Override

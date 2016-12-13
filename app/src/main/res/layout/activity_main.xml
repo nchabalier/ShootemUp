@@ -83,6 +83,6 @@
         android:id="@+id/editPseudo"
         android:textColor="@color/White"
         android:background="#2D2D2D"
-        android:layout_toLeftOf="@id/textView8"
-        android:layout_alignParentRight="@id/textView8"/>
+        android:layout_toRightOf="@id/textView8"
+        android:layout_alignBottom="@id/textView8"/>
 </RelativeLayout>
