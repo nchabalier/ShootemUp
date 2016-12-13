@@ -34,11 +34,18 @@ public class UpgradeActivity extends Activity{
 
         Intent i = getIntent();
         final ScoreBoard myScore = (ScoreBoard) i.getParcelableExtra("my_score");
+        ScoreBoard myScore2;
+
+        ScoreBoardDAO scoreBoardDAO = new ScoreBoardDAO(getBaseContext());
+        scoreBoardDAO.open();
+        myScore2 = scoreBoardDAO.getScoreboard(myScore.getName());
+
+        scoreBoardDAO.close();
 
         textBestScore = (TextView) findViewById(R.id.bestScoreText);
-        textBestScore.setText(String.valueOf(myScore.getScore()));
+        textBestScore.setText(String.valueOf(myScore2.getScore()));
         textTotalCoins = (TextView) findViewById(R.id.totalCoinsText);
-        textTotalCoins.setText(String.valueOf(myScore.getCoin()));
+        textTotalCoins.setText(String.valueOf(myScore2.getCoin()));
 
 
         buttonReturn = (ImageButton) findViewById(R.id.buttonReturn);
