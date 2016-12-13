@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,8 @@ public class UpgradeActivity extends Activity{
     private Button buttonBuyCoins;
     private ImageButton buttonPlay;
     private ListView listView;
+    private TextView textBestScore;
+    private TextView textTotalCoins;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,15 @@ public class UpgradeActivity extends Activity{
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_upgrade);
+
+        Intent i = getIntent();
+        final ScoreBoard myScore = (ScoreBoard) i.getParcelableExtra("my_score");
+
+        textBestScore = (TextView) findViewById(R.id.bestScoreText);
+        textBestScore.setText(String.valueOf(myScore.getScore()));
+        textTotalCoins = (TextView) findViewById(R.id.totalCoinsText);
+        textTotalCoins.setText(String.valueOf(myScore.getCoin()));
+
 
         buttonReturn = (ImageButton) findViewById(R.id.buttonReturn);
         buttonReturn.setOnClickListener(new View.OnClickListener() {
@@ -51,9 +63,6 @@ public class UpgradeActivity extends Activity{
             @Override
             public void onClick(View v) {
 
-                Intent i = getIntent();
-                ScoreBoard myScore = (ScoreBoard) i.getParcelableExtra("my_score");
-
                 Intent gameActivityIntent = new Intent(UpgradeActivity.this, GameActivity.class);
                 gameActivityIntent.putExtra("my_score", myScore);
                 startActivity(gameActivityIntent);
@@ -63,12 +72,12 @@ public class UpgradeActivity extends Activity{
         listView = (ListView) findViewById(R.id.upgradeListView);
         UpgradeAdapter adapter = new UpgradeAdapter(this, generateData());
         listView.setAdapter(adapter);
-        listView.setOnClickListener(new View.OnClickListener() {
+        /*listView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });
+        });*/
 
     }
 
