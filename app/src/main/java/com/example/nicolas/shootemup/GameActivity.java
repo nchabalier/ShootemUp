@@ -1,6 +1,7 @@
 package com.example.nicolas.shootemup;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 
@@ -18,6 +19,11 @@ public class GameActivity extends Activity{
         //setContentView(movingBackground);
         gameView = new GameView(this);
         setContentView(gameView);
+
+        //Get my current information (score, coins, information about ship, ...)
+        Intent i = getIntent();
+        ScoreBoard myScore = (ScoreBoard) i.getParcelableExtra("my_score");
+
 
     }
 

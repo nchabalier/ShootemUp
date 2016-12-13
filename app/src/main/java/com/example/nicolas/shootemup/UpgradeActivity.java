@@ -47,7 +47,12 @@ public class UpgradeActivity extends Activity{
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Intent i = getIntent();
+                ScoreBoard myScore = (ScoreBoard) i.getParcelableExtra("my_score");
+
                 Intent gameActivityIntent = new Intent(UpgradeActivity.this, GameActivity.class);
+                gameActivityIntent.putExtra("my_score", myScore);
                 startActivity(gameActivityIntent);
             }
         });

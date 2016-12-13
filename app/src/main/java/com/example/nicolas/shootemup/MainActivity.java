@@ -61,14 +61,22 @@ public class MainActivity extends Activity {
 
                 String name = editPseudo.getText().toString();
 
+
                 //If the current name is not in the data base we add it with a score equal to 0
                 ScoreBoardDAO scoreBoardDAO = new ScoreBoardDAO(getBaseContext());
                 scoreBoardDAO.open();
-                scoreBoardDAO.add(new ScoreBoard(1, name, 0,0,15,10,TypeWeapon.BASE));
+
+                ScoreBoard myScore = scoreBoardDAO.getScoreboard(name);
+                if(myScore== null) {
+                    myScore = new ScoreBoard(1, name, 0,0,15,10,TypeWeapon.BASE);
+                    scoreBoardDAO.add(myScore);
+                }
+
                 scoreBoardDAO.close();
 
-                //TODO: passer le "name" en extra dans l'intent
+
                 Intent upgradeActivityIntent = new Intent(MainActivity.this, UpgradeActivity.class);
+                upgradeActivityIntent.putExtra("my_score", myScore);
                 startActivity(upgradeActivityIntent);
             }
         });

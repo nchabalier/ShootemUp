@@ -99,6 +99,48 @@ public class ScoreBoardDAO {
         }
     }
 
+    public ScoreBoard getScoreboardFromCursor(Cursor cursor) {
+        ScoreBoard scoreBoard = new ScoreBoard();
+        //scoreBoard.setId(cursor.getLong(cursor.getColumnIndex(KEY)));
+        scoreBoard.setName(cursor.getString(cursor.getColumnIndex(NAME)));
+        scoreBoard.setScore(cursor.getLong(cursor.getColumnIndex(SCORE)));
+        scoreBoard.setCoin(cursor.getInt(cursor.getColumnIndex(COIN)));
+        scoreBoard.setShootSpeed(cursor.getInt(cursor.getColumnIndex(SHOTSPEED)));
+        scoreBoard.setShipSpeed(cursor.getInt(cursor.getColumnIndex(SHIPSPEED)));
+        switch (cursor.getString(cursor.getColumnIndex(WEAPONTYPE))){
+            case "BASE":
+                scoreBoard.setWeaponType(TypeWeapon.BASE);
+                break;
+            case "BAZOOKA":
+                scoreBoard.setWeaponType(TypeWeapon.BAZOOKA);
+                break;
+            case "GATTELING":
+                scoreBoard.setWeaponType(TypeWeapon.GATTELING);
+                break;
+        }
+        return scoreBoard;
+    }
+
+    public ScoreBoard getScoreboard(String name) {
+        String SCORES_SELECT_QUERY = "select * from " + TABLE_NAME + " where " + NAME + " = ?";
+        ScoreBoard scoreBoard = null;
+
+        Cursor cursor = mDb.rawQuery(SCORES_SELECT_QUERY, new String[] {name});
+        try {
+            if (cursor.moveToFirst()) {
+                scoreBoard = getScoreboardFromCursor(cursor);
+
+            }
+        } catch (Exception e) {
+            Log.d("ScoreBoardDAO", "Error while trying to get scores from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return scoreBoard;
+    }
+
     public int getCount(String name) {
         Cursor c = null;
         try {
@@ -132,24 +174,7 @@ public class ScoreBoardDAO {
             if (cursor.moveToFirst()) {
                 do {
 
-                    ScoreBoard scoreBoard = new ScoreBoard();
-                    //scoreBoard.setId(cursor.getLong(cursor.getColumnIndex(KEY)));
-                    scoreBoard.setName(cursor.getString(cursor.getColumnIndex(NAME)));
-                    scoreBoard.setScore(cursor.getLong(cursor.getColumnIndex(SCORE)));
-                    scoreBoard.setCoin(cursor.getInt(cursor.getColumnIndex(COIN)));
-                    scoreBoard.setShootSpeed(cursor.getInt(cursor.getColumnIndex(SHOTSPEED)));
-                    scoreBoard.setShipSpeed(cursor.getInt(cursor.getColumnIndex(SHIPSPEED)));
-                    switch (cursor.getString(cursor.getColumnIndex(WEAPONTYPE))){
-                        case "BASE":
-                            scoreBoard.setWeaponType(TypeWeapon.BASE);
-                            break;
-                        case "BAZOOKA":
-                            scoreBoard.setWeaponType(TypeWeapon.BAZOOKA);
-                            break;
-                        case "GATTELING":
-                            scoreBoard.setWeaponType(TypeWeapon.GATTELING);
-                            break;
-                    }
+                    ScoreBoard scoreBoard = getScoreboardFromCursor(cursor);
 
                     scores.add(scoreBoard);
 
