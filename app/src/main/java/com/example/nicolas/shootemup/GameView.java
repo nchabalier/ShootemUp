@@ -303,6 +303,7 @@ public class GameView extends SurfaceView implements Runnable {
 
             color.setColor(Color.WHITE);
             canvas.drawText(Integer.toString(player.score),getRight()-50,15,color);
+            canvas.drawText("Hp: "+Integer.toString(player.getPlayerShip().getCurrentHealth()),0,15,color);
 
             // Draw everything to the screen
             ourHolder.unlockCanvasAndPost(canvas);

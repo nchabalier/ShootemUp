@@ -54,6 +54,10 @@ public class Ship extends GameEntity {
         can.drawBitmap(bitmap, px, py, null);
     }
 
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+
     public void setX(int px) {
         position.x = px;
         collider.setX(px);
