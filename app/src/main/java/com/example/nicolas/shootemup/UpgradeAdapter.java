@@ -48,4 +48,8 @@ public class UpgradeAdapter extends ArrayAdapter<UpgradeItem> {
         // 5. return rowView
         return rowView;
     }
+
+    public UpgradeItem onItemClicked(int position){
+        return itemsArrayList.get(position);
+    }
 }
