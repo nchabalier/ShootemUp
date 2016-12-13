@@ -3,6 +3,7 @@ package com.example.nicolas.shootemup;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,6 +28,8 @@ public class ScoreBoardActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_score);
 
         listView = (ListView) findViewById(R.id.scoreListView);

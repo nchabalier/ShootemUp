@@ -12,14 +12,14 @@
 
     tools:context="com.example.nicolas.shootemup.MainActivity">
 
-    <ImageButton
+    <!--<ImageButton
         android:text="Options"
         android:layout_width="100sp"
         android:layout_height="100sp"
         android:id="@+id/buttonOptions"
         android:background="@drawable/option_button2"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true" />-->
 
     <Button
         android:text="Score"
@@ -29,17 +29,8 @@
         android:textSize="30sp"
         android:textColor="@color/White"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/buttonOptions"
-        android:background="@android:color/transparent"/>
-
-    <ImageButton
-        android:text="Facebook"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        android:background="@drawable/facebook_button"
-        android:id="@+id/buttonFacebook"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/buttonScore" />
+        android:layout_alignParentLeft="true"
+        android:background="@android:color/black"/>
 
     <ImageButton
         android:text="Play"
@@ -64,24 +55,34 @@
         android:layout_alignParentRight="true" />
 
     <TextView
-        android:text="Name"
+        android:text="Enter your name : "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView7"
-        android:layout_toLeftOf="@+id/buttonScore"
+        android:layout_alignParentLeft="true"
         android:textColor="@color/White"
-        android:id="@+id/textView8" />
+        android:ems="10"
+        android:gravity="right"
+        android:id="@+id/textView8"/>
+
+    <ImageButton
+        android:text="Facebook"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:background="@drawable/facebook_button"
+        android:id="@+id/buttonFacebook"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Pseudo"
+        android:text="Player"
         android:ems="10"
         android:id="@+id/editPseudo"
         android:textColor="@color/White"
         android:background="#2D2D2D"
-        android:layout_below="@+id/textView7"
-        android:layout_alignRight="@+id/buttonFacebook"
-        android:layout_alignBottom="@+id/textView8"/>
+        android:layout_toLeftOf="@id/textView8"
+        android:layout_alignParentRight="@id/textView8"/>
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.example.nicolas.shootemup;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-    private ImageButton buttonOptions;
+    //private ImageButton buttonOptions;
     private ImageButton buttonUpdgrade;
     private Button buttonScore;
     private ImageButton buttonFacebook;
@@ -25,6 +26,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
         //Created score board data base if not exist
@@ -45,14 +48,14 @@ public class MainActivity extends Activity {
             }
         });
 
-        buttonOptions = (ImageButton) findViewById(R.id.buttonOptions);
+/*        buttonOptions = (ImageButton) findViewById(R.id.buttonOptions);
         buttonOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent optionsActivityIntent = new Intent(MainActivity.this, OptionsActivity.class);
                 startActivity(optionsActivityIntent);
             }
-        });
+        });*/
 
         buttonUpdgrade = (ImageButton) findViewById(R.id.buttonUpgrade);
         buttonUpdgrade.setOnClickListener(new View.OnClickListener() {
