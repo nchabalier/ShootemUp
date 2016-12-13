@@ -30,6 +30,7 @@ public class ShipPNJ extends Ship {
         this.behavior = new SteeringBehaviour(this,"ZigZag");
         this.healthPoint =20;
         this.currentHealth = this.healthPoint;
+        coin = 1000;
         behavior.setSpeed(5);
 
     }

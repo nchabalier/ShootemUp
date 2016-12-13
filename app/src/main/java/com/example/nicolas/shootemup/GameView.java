@@ -230,6 +230,7 @@ public class GameView extends SurfaceView implements Runnable {
             gameEntities.add(entity);
         }
 
+
         for (GameEntity entity : toDelete) {
             //if ennemy died
             if (entity instanceof ShipPNJ) {
@@ -248,11 +249,17 @@ public class GameView extends SurfaceView implements Runnable {
                 ScoreBoardDAO database = new ScoreBoardDAO(context);
                 database.open();
                 database.update(score);
+                System.gc();
                 database.close();
                 if(context instanceof GameActivity) ((GameActivity) context).end();
             }
             entity.onDestroy();
             gameEntities.remove(entity);
+        }
+
+        if(ennemiesKilled>20*cycleNumber+1){
+            bossPhase=false;
+            ennemiesKilled=0;
         }
 
     }
@@ -291,6 +298,7 @@ public class GameView extends SurfaceView implements Runnable {
     // shutdown our thread.
     public void pause() {
         playing = false;
+        System.gc();
         try {
             gameThread.join();
         } catch (InterruptedException e) {

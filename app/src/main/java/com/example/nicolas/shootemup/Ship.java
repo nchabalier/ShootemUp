@@ -38,7 +38,7 @@ public class Ship extends GameEntity {
         super(position,bitmap,new Collider(position.x,position.y,bitmap.getWidth(),bitmap.getHeight()));
         collider.setOwner(this);
         activeWeapon=new Weapon(typeWeapon,this);
-        activeWeapon.shotSpeed+=shootSpeed;
+        activeWeapon.cooldown-=shootSpeed;
         this.speed=speed;
         this.healthPoint=hp;
         this.currentHealth = this.healthPoint;

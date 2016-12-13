@@ -16,7 +16,7 @@ public class Weapon {
     private TypeOfShoot typeOfShoot;
     private double rateOfFire;
     private Time time;
-    private long cooldown;              //amount of time it takes for another shoot
+    public long cooldown;              //amount of time it takes for another shoot
                                         // to be fired in ms
     private long timeLastShotFired;     //Time at which the last shot was fired
     private Ship owner;

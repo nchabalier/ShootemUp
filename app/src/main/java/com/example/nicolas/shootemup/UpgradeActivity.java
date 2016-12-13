@@ -41,7 +41,7 @@ public class UpgradeActivity extends Activity{
     private ArrayList<UpgradeItem> generateData(){
         ArrayList<UpgradeItem> items = new ArrayList<UpgradeItem>();
         items.add(new UpgradeItem(0, "Increase ship speed","1000 coins"));
-        items.add(new UpgradeItem(1, "Increase shoot speed","2000 coins"));
+        items.add(new UpgradeItem(1, "Increase Firerate","2000 coins"));
         items.add(new UpgradeItem(2, "Double shoots","3000 coins"));
         items.add(new UpgradeItem(3, "Missile","4000 coins"));
 
@@ -90,7 +90,7 @@ public class UpgradeActivity extends Activity{
             public void onClick(View v) {
 
                 Intent gameActivityIntent = new Intent(UpgradeActivity.this, GameActivity.class);
-                gameActivityIntent.putExtra("my_score", myScore);
+                gameActivityIntent.putExtra("my_score", myScore2);
                 startActivity(gameActivityIntent);
             }
         });
@@ -104,16 +104,28 @@ public class UpgradeActivity extends Activity{
                 Log.d("Position :",Integer.toString(i));
                 switch(i){
                     case 0:
-                        myScore2.setShipSpeed(myScore2.getShipSpeed()+5);
+                        if(myScore2.getCoin()>=1000) {
+                            myScore2.setShipSpeed(myScore2.getShipSpeed() + 5);
+                            myScore2.setCoin(myScore2.getCoin()-1000);
+                        }
                         break;
                     case 1:
-                        myScore2.setShootSpeed(myScore2.getShootSpeed()+5);
+                        if(myScore2.getCoin()>=2000) {
+                            myScore2.setShootSpeed(myScore2.getShootSpeed()+5);
+                            myScore2.setCoin(myScore2.getCoin()-2000);
+                        }
                         break;
                     case 2:
-                        myScore2.setWeaponType(TypeWeapon.GATTELING);
+                        if(myScore2.getCoin()>=3000) {
+                            myScore2.setWeaponType(TypeWeapon.GATTELING);
+                            myScore2.setCoin(myScore2.getCoin()-3000);
+                        }
                         break;
                     case 3:
-                        myScore2.setWeaponType(TypeWeapon.BAZOOKA);
+                        if(myScore2.getCoin()>=4000) {
+                            myScore2.setWeaponType(TypeWeapon.BAZOOKA);
+                            myScore2.setCoin(myScore2.getCoin()-4000);
+                        }
                         break;
 
                 }
@@ -122,6 +134,8 @@ public class UpgradeActivity extends Activity{
                 scoreBoardDAO.update(myScore2);
 
                 scoreBoardDAO.close();
+
+                textTotalCoins.setText(String.valueOf(myScore2.getCoin()));
             }
         });
 
