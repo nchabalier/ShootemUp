@@ -26,6 +26,7 @@ public class UpgradeActivity extends Activity{
     private ListView listView;
     private TextView textBestScore;
     private TextView textTotalCoins;
+    private  ScoreBoard myScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +35,31 @@ public class UpgradeActivity extends Activity{
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_upgrade);
 
+
+    }
+
+    private ArrayList<UpgradeItem> generateData(){
+        ArrayList<UpgradeItem> items = new ArrayList<UpgradeItem>();
+        items.add(new UpgradeItem(0, "Increase ship speed","1000 coins"));
+        items.add(new UpgradeItem(1, "Increase shoot speed","2000 coins"));
+        items.add(new UpgradeItem(2, "Double shoots","3000 coins"));
+        items.add(new UpgradeItem(3, "Missile","4000 coins"));
+
+        return items;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         Intent i = getIntent();
-        final ScoreBoard myScore = (ScoreBoard) i.getParcelableExtra("my_score");
-        ScoreBoard myScore2;
+        myScore = (ScoreBoard) i.getParcelableExtra("my_score");
 
         ScoreBoardDAO scoreBoardDAO = new ScoreBoardDAO(getBaseContext());
         scoreBoardDAO.open();
-        myScore2 = scoreBoardDAO.getScoreboard(myScore.getName());
+        final ScoreBoard myScore2 = scoreBoardDAO.getScoreboard(myScore.getName());
 
         scoreBoardDAO.close();
+
 
         textBestScore = (TextView) findViewById(R.id.bestScoreText);
         textBestScore.setText(String.valueOf(myScore2.getScore()));
@@ -87,31 +104,21 @@ public class UpgradeActivity extends Activity{
                 Log.d("Position :",Integer.toString(i));
                 switch(i){
                     case 0:
-                        myScore.setShipSpeed(myScore.getShipSpeed()+5);
+                        myScore2.setShipSpeed(myScore2.getShipSpeed()+5);
                         break;
                     case 1:
-                        myScore.setShootSpeed(myScore.getShootSpeed()+5);
+                        myScore2.setShootSpeed(myScore2.getShootSpeed()+5);
                         break;
                     case 2:
-                        myScore.setWeaponType(TypeWeapon.GATTELING);
+                        myScore2.setWeaponType(TypeWeapon.GATTELING);
                         break;
                     case 3:
-                        myScore.setWeaponType(TypeWeapon.BAZOOKA);
+                        myScore2.setWeaponType(TypeWeapon.BAZOOKA);
                         break;
 
                 }
             }
         });
 
-    }
-
-    private ArrayList<UpgradeItem> generateData(){
-        ArrayList<UpgradeItem> items = new ArrayList<UpgradeItem>();
-        items.add(new UpgradeItem(0, "Increase ship speed","1000 coins"));
-        items.add(new UpgradeItem(1, "Increase shoot speed","2000 coins"));
-        items.add(new UpgradeItem(2, "Double shoots","3000 coins"));
-        items.add(new UpgradeItem(3, "Missile","4000 coins"));
-
-        return items;
     }
 }
