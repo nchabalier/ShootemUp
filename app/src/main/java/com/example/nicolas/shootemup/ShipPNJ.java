@@ -16,6 +16,7 @@ public class ShipPNJ extends Ship {
 
     private SteeringBehaviour behavior;
     private int coin;
+    private boolean isBoss;
 
     public ShipPNJ(Point position, Bitmap bitmap, int coin) {
         super(bitmap,position.x,position.y);
@@ -31,8 +32,13 @@ public class ShipPNJ extends Ship {
         this.healthPoint =20;
         this.currentHealth = this.healthPoint;
         coin = 1000;
+        isBoss=true;
         behavior.setSpeed(5);
 
+    }
+
+    public boolean isBoss() {
+        return isBoss;
     }
 
     public SteeringBehaviour getBehavior() {

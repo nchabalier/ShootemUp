@@ -83,7 +83,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         timeMesuring = new Time();
         ennemiesKilled = 0;
-        cycleNumber = 1;
+        cycleNumber = 0;
 
         //Initialize entities list
         gameEntities = new ArrayList<GameEntity>();
@@ -196,7 +196,7 @@ public class GameView extends SurfaceView implements Runnable {
         timeMesuring.setToNow();
         currentTime = timeMesuring.toMillis(true);
 
-        if (currentTime - timeLastEnnemyGenerated > 1000 / cycleNumber) {
+        if (currentTime - timeLastEnnemyGenerated > 1000-cycleNumber*50) {
             timeLastEnnemyGenerated = currentTime;
             if (ennemiesKilled < 20 * cycleNumber) {
                 gameEntities.add(new ShipPNJ(new Point(randomX, 0), commonEnnemyBitmap, 10));
@@ -247,6 +247,11 @@ public class GameView extends SurfaceView implements Runnable {
                 ((ShipPNJ) entity).onDestroy(player);
                 Log.d("Score",Integer.toString(player.score));
                 Log.d("Coin",Integer.toString(player.getCoin()));
+                if(((ShipPNJ) entity).isBoss()) {
+                    bossPhase = false;
+                    ennemiesKilled=0;
+                    cycleNumber++;
+                }
             }
             //if playerShip has been killed
             else if (entity instanceof Ship)
@@ -265,12 +270,6 @@ public class GameView extends SurfaceView implements Runnable {
             entity.onDestroy();
             gameEntities.remove(entity);
         }
-
-        if(ennemiesKilled>20*cycleNumber+1){
-            bossPhase=false;
-            ennemiesKilled=0;
-        }
-
     }
 
     // Draw the newly updated scene
