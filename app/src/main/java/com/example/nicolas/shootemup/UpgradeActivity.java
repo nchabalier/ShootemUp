@@ -63,12 +63,13 @@ public class UpgradeActivity extends Activity{
         listView = (ListView) findViewById(R.id.upgradeListView);
         UpgradeAdapter adapter = new UpgradeAdapter(this, generateData());
         listView.setAdapter(adapter);
-        listView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        listView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                return;
+//
+//            }
+//        });
 
     }
 
