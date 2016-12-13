@@ -136,7 +136,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
         Bitmap playerShipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.mship1);
         Ship playerShip = new Ship(playerShipBitmap,new Point(getRight()/2,getBottom()
-                - playerShipBitmap.getHeight()),TypeWeapon.BASE,3,10,0);
+                - playerShipBitmap.getHeight()),score.getWeaponType(),3,score.getShipSpeed(),score.getShootSpeed());
 
         gameEntities.add(playerShip);
 
@@ -175,7 +175,6 @@ public class GameView extends SurfaceView implements Runnable {
         timeMesuring.setToNow();
         gamebegin = timeMesuring.toMillis(true);
 
-        generateBoss();
     }
 
     //Random Generation of ennemies
@@ -220,7 +219,7 @@ public class GameView extends SurfaceView implements Runnable {
         List<GameEntity> toAdd = new ArrayList<GameEntity>();
 
         updateScore();
-//        randomEnnemyGenerator();
+        randomEnnemyGenerator();
 
         for (GameEntity entity : gameEntities) {
             entity.update(gameEntities, toDelete, toAdd);
@@ -238,6 +237,7 @@ public class GameView extends SurfaceView implements Runnable {
                 if(score.getScore()<player.score){
                     score.setScore(player.score);
                 }
+                score.setCoin(score.getCoin()+player.getCoin());
                 if(context instanceof GameActivity) ((GameActivity) context).end();
             }
             entity.onDestroy();
