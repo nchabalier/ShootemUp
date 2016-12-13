@@ -208,7 +208,7 @@ public class GameView extends SurfaceView implements Runnable {
     // in game
     public void updateScore() {
         timeMesuring.setToNow();
-        player.score += (timeMesuring.toMillis(true) - gamebegin) / 60000;
+        player.score += (timeMesuring.toMillis(true) - gamebegin) / 6000;
     }
 
     // Everything that needs to be updated goes in here
@@ -230,14 +230,24 @@ public class GameView extends SurfaceView implements Runnable {
         }
 
         for (GameEntity entity : toDelete) {
+            //if ennemy died
             if (entity instanceof ShipPNJ) {
                 ennemiesKilled += 1;
                 ((ShipPNJ) entity).onDestroy(player);
-            } else if (entity instanceof Ship) {
+                Log.d("Score",Integer.toString(player.score));
+                Log.d("Coin",Integer.toString(player.getCoin()));
+            }
+            //if playerShip has been killed
+            else if (entity instanceof Ship)
+            {
                 if(score.getScore()<player.score){
                     score.setScore(player.score);
                 }
                 score.setCoin(score.getCoin()+player.getCoin());
+                ScoreBoardDAO database = new ScoreBoardDAO(context);
+                database.open();
+                database.update(score);
+                database.close();
                 if(context instanceof GameActivity) ((GameActivity) context).end();
             }
             entity.onDestroy();
