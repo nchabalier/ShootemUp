@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -271,6 +272,11 @@ public class GameView extends SurfaceView implements Runnable {
             for (GameEntity entity : gameEntities) {
                 entity.draw(canvas);
             }
+
+            Paint color = new Paint();
+
+            color.setColor(Color.WHITE);
+            canvas.drawText(Integer.toString(player.score),getRight()-50,15,color);
 
             // Draw everything to the screen
             ourHolder.unlockCanvasAndPost(canvas);
