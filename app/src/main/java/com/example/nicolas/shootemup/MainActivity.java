@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
                 if(myScore== null) {
                     myScore = new ScoreBoard(1, name, 0,0,15,10,TypeWeapon.BASE);
                     scoreBoardDAO.add(myScore);
-                } 
+                }
 
                 scoreBoardDAO.close();
 
