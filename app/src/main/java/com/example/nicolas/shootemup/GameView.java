@@ -47,6 +47,7 @@ public class GameView extends SurfaceView implements Runnable {
     // Declare an object of type Bitmap
     Bitmap bitmapBob;
     Bitmap commonEnnemyBitmap;
+    Bitmap bossBitmap;
 
     Time timeMesuring;
     long gamebegin;
@@ -90,6 +91,7 @@ public class GameView extends SurfaceView implements Runnable {
         // Load Bob from his .png file
         bitmapBob = BitmapFactory.decodeResource(this.getResources(), R.drawable.ship);
         //-----------------------------
+        bossBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.spacestation);
 
         backGround = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.space4);
@@ -160,6 +162,8 @@ public class GameView extends SurfaceView implements Runnable {
         player.getPlayerShip().setY(getBottom()-player.getPlayerShip().getBitmap().getHeight());
         player.getPlayerShip().setxBound(getRight());
         player.getPlayerShip().setyBound(getBottom());
+
+        generateBoss();
     }
 
     //Random Generation of ennemies
@@ -172,15 +176,21 @@ public class GameView extends SurfaceView implements Runnable {
         currentTime = timeMesuring.toMillis(true);
 
         if(currentTime-timeLastEnnemyGenerated > 1000/cycleNumber){
+            timeLastEnnemyGenerated = currentTime;
             if(ennemiesKilled <20*cycleNumber) {
                 gameEntities.add(new ShipPNJ(new Point(randomX, 0), commonEnnemyBitmap, 10));
-                timeLastEnnemyGenerated = currentTime;
             } else if (!bossPhase && ennemiesKilled >= 20*cycleNumber){
-
+                bossPhase=true;
+                generateBoss();
             }
         }
+    }
 
-
+    // Method used to generate a Big Bad Boss
+    private void generateBoss(){
+        ShipPNJ boss = new ShipPNJ(new Point(0,0),bossBitmap,1000);
+        boss.makeBoss();
+        gameEntities.add(boss);
     }
 
     // Method to update the score depending on the time spent
@@ -198,7 +208,7 @@ public class GameView extends SurfaceView implements Runnable {
         List<GameEntity> toAdd = new ArrayList<GameEntity>();
 
         updateScore();
-        randomEnnemyGenerator();
+//        randomEnnemyGenerator();
 
         for(GameEntity entity : gameEntities) {
             entity.update(gameEntities,toDelete,toAdd );
@@ -271,6 +281,8 @@ public class GameView extends SurfaceView implements Runnable {
     // So we can override this method and detect screen touches.
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
+        if(motionEvent.getX() == player.getPlayerShip().getX())
+            return true;
 
         int x = (int)motionEvent.getX();
         player.getPlayerShip().setPoint(x-25);

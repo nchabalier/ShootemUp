@@ -5,5 +5,5 @@ package com.example.nicolas.shootemup;
  */
 
 public enum TypeWeapon {
-    BASE,BAZOOKA,GATTELING
+    BASE,BAZOOKA,GATTELING,BOSSWEAPON
 }

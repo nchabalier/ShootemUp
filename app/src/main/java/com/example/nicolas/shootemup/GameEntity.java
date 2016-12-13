@@ -59,4 +59,8 @@ public class GameEntity  {
 
         return outOfBounds;
     }
+
+    public static int getxBound() {
+        return xBound;
+    }
 }

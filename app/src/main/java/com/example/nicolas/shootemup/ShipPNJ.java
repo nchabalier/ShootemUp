@@ -31,6 +31,15 @@ public class ShipPNJ extends Ship {
         isNpc = true;
     }
 
+    public void makeBoss(){
+        activeWeapon = new Weapon(TypeWeapon.BOSSWEAPON,this);
+        this.behavior = new SteeringBehaviour(this,"ZigZag");
+        this.healthPoint =20;
+        this.currentHealth = this.healthPoint;
+        behavior.setSpeed(5);
+
+    }
+
     public SteeringBehaviour getBehavior() {
         return behavior;
     }
