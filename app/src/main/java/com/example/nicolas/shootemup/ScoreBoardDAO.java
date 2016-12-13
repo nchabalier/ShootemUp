@@ -55,19 +55,32 @@ public class ScoreBoardDAO {
         return mDb;
     }
 
+    public ContentValues convertToContentValues(ScoreBoard scoreBoard) {
+        ContentValues contentValues = new ContentValues();
+//        contentValues.put(KEY, scoreBoard.getId());
+        contentValues.put(NAME, scoreBoard.getName());
+        contentValues.put(SCORE, scoreBoard.getScore());
+        contentValues.put(COIN,scoreBoard.getCoin());
+        contentValues.put(SHOTSPEED, scoreBoard.getShootSpeed());
+        contentValues.put(SHIPSPEED, scoreBoard.getShipSpeed());
+        contentValues.put(WEAPONTYPE, scoreBoard.getWeaponType().name());
+
+        return contentValues;
+    }
+
+    public void update(ScoreBoard scoreBoard) {
+        ContentValues contentValues = convertToContentValues(scoreBoard);
+        mDb.update(TABLE_NAME, contentValues, NAME + "=?", new String[] {scoreBoard.getName()});
+        //mDb.execSQL("UPDATE " + TABLE_NAME  + " SET "+ SCORE +" = " + "12" + " WHERE " + NAME + " = '" + scoreBoard.getName() +"'");
+
+    }
+
     public void add(ScoreBoard scoreBoard) {
 
         String name = scoreBoard.getName();
 
         if(getCount(name) == 0) {
-            ContentValues contentValues = new ContentValues();
-//        contentValues.put(KEY, scoreBoard.getId());
-            contentValues.put(NAME, scoreBoard.getName());
-            contentValues.put(SCORE, scoreBoard.getScore());
-            contentValues.put(COIN,scoreBoard.getCoin());
-            contentValues.put(SHOTSPEED, scoreBoard.getShootSpeed());
-            contentValues.put(SHIPSPEED, scoreBoard.getShipSpeed());
-            contentValues.put(WEAPONTYPE, scoreBoard.getWeaponType().name());
+            ContentValues contentValues = convertToContentValues(scoreBoard);
             mDb.insert(TABLE_NAME, null,contentValues);
         }
 
