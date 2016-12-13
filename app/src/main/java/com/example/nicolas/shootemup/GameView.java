@@ -50,6 +50,7 @@ public class GameView extends SurfaceView implements Runnable {
     // Declare an object of type Bitmap
     Bitmap bitmapBob;
     Bitmap commonEnnemyBitmap;
+    Bitmap commonEnnemyBitmap2;
     Bitmap bossBitmap;
 
     Time timeMesuring;
@@ -83,7 +84,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         timeMesuring = new Time();
         ennemiesKilled = 0;
-        cycleNumber = 0;
+        cycleNumber = 1;
 
         //Initialize entities list
         gameEntities = new ArrayList<GameEntity>();
@@ -119,10 +120,14 @@ public class GameView extends SurfaceView implements Runnable {
 
         //configure bitmap for ennemies
         commonEnnemyBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
+        commonEnnemyBitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.space_ship);
         Matrix matrixRotation = new Matrix();
         matrixRotation.setRotate(180);
         commonEnnemyBitmap = Bitmap.createBitmap(commonEnnemyBitmap,0, 0,
                 commonEnnemyBitmap.getWidth(),commonEnnemyBitmap.getHeight(),
+                matrixRotation,false);
+        commonEnnemyBitmap2 = Bitmap.createBitmap(commonEnnemyBitmap2,0, 0,
+                commonEnnemyBitmap2.getWidth(),commonEnnemyBitmap2.getHeight(),
                 matrixRotation,false);
 
         bossPhase = false;
@@ -196,10 +201,16 @@ public class GameView extends SurfaceView implements Runnable {
         timeMesuring.setToNow();
         currentTime = timeMesuring.toMillis(true);
 
-        if (currentTime - timeLastEnnemyGenerated > 1000-cycleNumber*50) {
+        if (currentTime - timeLastEnnemyGenerated > 1000-(cycleNumber-1)*50) {
             timeLastEnnemyGenerated = currentTime;
             if (ennemiesKilled < 20 * cycleNumber) {
-                gameEntities.add(new ShipPNJ(new Point(randomX, 0), commonEnnemyBitmap, 10));
+                if(rand.nextInt(100)<75-cycleNumber*5)
+                    gameEntities.add(new ShipPNJ(new Point(randomX, 0), commonEnnemyBitmap, 10));
+                else {
+                    ShipPNJ enemyGenerated = new ShipPNJ(new Point(randomX, 0), commonEnnemyBitmap2, 20);
+                    enemyGenerated.makeSuperMob();
+                    gameEntities.add(enemyGenerated);
+                }
             } else if (!bossPhase && ennemiesKilled >= 20 * cycleNumber) {
                 bossPhase = true;
                 generateBoss();

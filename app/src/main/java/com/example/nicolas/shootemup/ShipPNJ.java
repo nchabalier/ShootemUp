@@ -37,6 +37,13 @@ public class ShipPNJ extends Ship {
 
     }
 
+    public void makeSuperMob(){
+        activeWeapon = new Weapon(TypeWeapon.GATTELING,this);
+        this.healthPoint =2;
+        this.currentHealth = this.healthPoint;
+
+    }
+
     public boolean isBoss() {
         return isBoss;
     }

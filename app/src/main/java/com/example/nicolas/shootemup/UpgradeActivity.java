@@ -51,6 +51,13 @@ public class UpgradeActivity extends Activity{
     @Override
     protected void onResume() {
         super.onResume();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         Intent i = getIntent();
         myScore = (ScoreBoard) i.getParcelableExtra("my_score");
 
