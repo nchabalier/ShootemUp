@@ -80,6 +80,7 @@ public class UpgradeActivity extends Activity{
             @Override
             public void onClick(View v) {
                 Intent storeActivityIntent = new Intent(UpgradeActivity.this, StoreActivity.class);
+                storeActivityIntent.putExtra("my_score", myScore2);
                 startActivity(storeActivityIntent);
             }
         });
