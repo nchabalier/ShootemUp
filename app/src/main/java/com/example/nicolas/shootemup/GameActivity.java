@@ -36,6 +36,10 @@ public class GameActivity extends Activity{
 
     }
 
+    public void end(){
+        finish();
+    }
+
     public static void vibrate() {
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 200 milliseconds

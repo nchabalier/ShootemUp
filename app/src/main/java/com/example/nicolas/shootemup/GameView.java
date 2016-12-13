@@ -238,6 +238,7 @@ public class GameView extends SurfaceView implements Runnable {
                 if(score.getScore()<player.score){
                     score.setScore(player.score);
                 }
+                if(context instanceof GameActivity) ((GameActivity) context).end();
             }
             entity.onDestroy();
             gameEntities.remove(entity);
