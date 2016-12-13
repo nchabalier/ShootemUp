@@ -64,5 +64,6 @@ public class ShipPNJ extends Ship {
 
     public void onDestroy(Player player){
         player.setCoin(player.getCoin()+coin);
+        player.score+=coin*10;
     }
 }

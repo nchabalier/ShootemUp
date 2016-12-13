@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -72,12 +74,27 @@ public class UpgradeActivity extends Activity{
         listView = (ListView) findViewById(R.id.upgradeListView);
         UpgradeAdapter adapter = new UpgradeAdapter(this, generateData());
         listView.setAdapter(adapter);
-        /*listView.setOnClickListener(new View.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("Position :",Integer.toString(i));
+                switch(i){
+                    case 0:
+                        myScore.setShipSpeed(myScore.getShipSpeed()+5);
+                        break;
+                    case 1:
+                        myScore.setShootSpeed(myScore.getShootSpeed()+5);
+                        break;
+                    case 2:
+                        myScore.setWeaponType(TypeWeapon.GATTELING);
+                        break;
+                    case 3:
+                        myScore.setWeaponType(TypeWeapon.BAZOOKA);
+                        break;
 
+                }
             }
-        });*/
+        });
 
     }
 
