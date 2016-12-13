@@ -34,6 +34,17 @@ public class Ship extends GameEntity {
         speed = 10;
     }
 
+    Ship(Bitmap bitmap,Point position,TypeWeapon typeWeapon, int hp, int speed, int shootSpeed){
+        super(position,bitmap,new Collider(position.x,position.y,bitmap.getWidth(),bitmap.getHeight()));
+        collider.setOwner(this);
+        activeWeapon=new Weapon(typeWeapon,this);
+        activeWeapon.shotSpeed+=shootSpeed;
+        this.speed=speed;
+        this.healthPoint=hp;
+        this.currentHealth = this.healthPoint;
+
+    }
+
     @Override
     public void draw(Canvas can) {
         draw(can, position.x, position.y);

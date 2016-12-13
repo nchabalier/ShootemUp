@@ -21,7 +21,7 @@ public class Weapon {
     private long timeLastShotFired;     //Time at which the last shot was fired
     private Ship owner;
     private int shotPower;
-    private int shotSpeed;
+    public int shotSpeed;
 
     private static int yBound;
     private static int xBound;

@@ -105,14 +105,7 @@ public class GameView extends SurfaceView implements Runnable {
 //        shoots = new ArrayList<Shoot>();
 //        enemiesShips = new ArrayList<Ship>();
 
-        Bitmap playerShipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.mship1);
-        Ship playerShip = new Ship(playerShipBitmap, 100, 775);
-        playerShip.setActiveWeapon(new Weapon(TypeWeapon.GATTELING, playerShip));
 
-        gameEntities.add(playerShip);
-
-        // Initialize player and it's Attributes
-        player = new Player(playerShip, 0);
 
         //configure bitmap for ennemies
         commonEnnemyBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
@@ -141,8 +134,15 @@ public class GameView extends SurfaceView implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        Bitmap playerShipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.mship1);
+        Ship playerShip = new Ship(playerShipBitmap,new Point(getRight()/2,getBottom()
+                - playerShipBitmap.getHeight()),TypeWeapon.BASE,3,10,0);
 
-        player.getPlayerShip().setY(getBottom() - player.getPlayerShip().getBitmap().getHeight());
+        gameEntities.add(playerShip);
+
+        // Initialize player and it's Attributes
+        player = new Player(playerShip, 0);
+
         player.getPlayerShip().setxBound(getRight());
         player.getPlayerShip().setyBound(getBottom());
 
