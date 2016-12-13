@@ -117,6 +117,11 @@ public class UpgradeActivity extends Activity{
                         break;
 
                 }
+                ScoreBoardDAO scoreBoardDAO = new ScoreBoardDAO(getBaseContext());
+                scoreBoardDAO.open();
+                scoreBoardDAO.update(myScore2);
+
+                scoreBoardDAO.close();
             }
         });
 
