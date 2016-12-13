@@ -40,8 +40,13 @@ public class Collider {
             int otherX = other.x;
             int otherY = other.y;
 
-            if (!((x + width <= otherX) || (x >= otherX + other.width) || (y + height <= otherY) || (y >= otherY + other.height)))
+            if (!((x + width <= otherX) || (x >= otherX + other.width) || (y + height <= otherY) || (y >= otherY + other.height))) {
                 owner.onCollision(toDelete, other.owner);
+                if(owner instanceof Ship && !(owner instanceof ShipPNJ)) {
+                    GameActivity.vibrate();
+                }
+            }
+
         }
 
     }

@@ -127,9 +127,6 @@ public class Ship extends GameEntity {
         if(hitter instanceof Shoot){
             Shoot shotHitting = (Shoot) hitter;
             currentHealth -= shotHitting.getPower();
-            if(!(this instanceof ShipPNJ)) {
-                GameActivity.vibrate();
-            }
         }
         else{
             currentHealth-=1;
