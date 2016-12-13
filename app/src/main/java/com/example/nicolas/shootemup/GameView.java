@@ -4,10 +4,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -65,19 +67,21 @@ public class GameView extends SurfaceView implements Runnable {
     private int cycleNumber;
     private long timeLastEnnemyGenerated;
     private Boolean bossPhase;
+    private ScoreBoard score;
 
     // When the we initialize (call new()) on gameView
     // This special constructor method runs
-    public GameView(Context context) {
+    public GameView(Context context,ScoreBoard score) {
         // The next line of code asks the
         // SurfaceView class to set up our object.
         // How kind.
         super(context);
 
+        this.score = score;
         this.context = context;
 
         timeMesuring = new Time();
-        ennemiesKilled=0;
+        ennemiesKilled = 0;
         cycleNumber = 1;
 
         //Initialize entities list
@@ -103,27 +107,45 @@ public class GameView extends SurfaceView implements Runnable {
 
         Bitmap playerShipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.mship1);
         Ship playerShip = new Ship(playerShipBitmap, 100, 775);
-        playerShip.setActiveWeapon(new Weapon(TypeWeapon.GATTELING,playerShip));
+        playerShip.setActiveWeapon(new Weapon(TypeWeapon.GATTELING, playerShip));
 
         gameEntities.add(playerShip);
 
         // Initialize player and it's Attributes
-        player = new Player(playerShip,0);
+        player = new Player(playerShip, 0);
 
         //configure bitmap for ennemies
         commonEnnemyBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
+        Matrix matrixRotation = new Matrix();
+        matrixRotation.setRotate(180);
+        commonEnnemyBitmap = Bitmap.createBitmap(commonEnnemyBitmap,0, 0,
+                commonEnnemyBitmap.getWidth(),commonEnnemyBitmap.getHeight(),
+                matrixRotation,false);
 
-        bossPhase=false;
+        bossPhase = false;
 
         // Set our boolean to true - game on!
         playing = true;
 
 
+        setup();
+
     }
 
     @Override
     public void run() {
-        setup();
+
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        player.getPlayerShip().setY(getBottom() - player.getPlayerShip().getBitmap().getHeight());
+        player.getPlayerShip().setxBound(getRight());
+        player.getPlayerShip().setyBound(getBottom());
+
 
         while (playing) {
 
@@ -149,55 +171,45 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     // Method used to setup the game correctly
-    private void setup(){
+    private void setup() {
         timeMesuring.setToNow();
         gamebegin = timeMesuring.toMillis(true);
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        player.getPlayerShip().setY(getBottom()-player.getPlayerShip().getBitmap().getHeight());
-        player.getPlayerShip().setxBound(getRight());
-        player.getPlayerShip().setyBound(getBottom());
 
         generateBoss();
     }
 
     //Random Generation of ennemies
-    private void randomEnnemyGenerator(){
+    private void randomEnnemyGenerator() {
         long currentTime;
         Random rand = new Random();
-        int randomX = rand.nextInt((getWidth()-commonEnnemyBitmap.getWidth()) + 1);
+        int randomX = rand.nextInt((getWidth() - commonEnnemyBitmap.getWidth()) + 1);
 
         timeMesuring.setToNow();
         currentTime = timeMesuring.toMillis(true);
 
-        if(currentTime-timeLastEnnemyGenerated > 1000/cycleNumber){
+        if (currentTime - timeLastEnnemyGenerated > 1000 / cycleNumber) {
             timeLastEnnemyGenerated = currentTime;
-            if(ennemiesKilled <20*cycleNumber) {
+            if (ennemiesKilled < 20 * cycleNumber) {
                 gameEntities.add(new ShipPNJ(new Point(randomX, 0), commonEnnemyBitmap, 10));
-            } else if (!bossPhase && ennemiesKilled >= 20*cycleNumber){
-                bossPhase=true;
+            } else if (!bossPhase && ennemiesKilled >= 20 * cycleNumber) {
+                bossPhase = true;
                 generateBoss();
             }
         }
     }
 
     // Method used to generate a Big Bad Boss
-    private void generateBoss(){
-        ShipPNJ boss = new ShipPNJ(new Point(0,0),bossBitmap,1000);
+    private void generateBoss() {
+        ShipPNJ boss = new ShipPNJ(new Point(0, 0), bossBitmap, 1000);
         boss.makeBoss();
         gameEntities.add(boss);
     }
 
     // Method to update the score depending on the time spent
     // in game
-    public void updateScore(){
+    public void updateScore() {
         timeMesuring.setToNow();
-        player.score += (timeMesuring.toMillis(true)-gamebegin)/60000;
+        player.score += (timeMesuring.toMillis(true) - gamebegin) / 60000;
     }
 
     // Everything that needs to be updated goes in here
@@ -210,21 +222,22 @@ public class GameView extends SurfaceView implements Runnable {
         updateScore();
 //        randomEnnemyGenerator();
 
-        for(GameEntity entity : gameEntities) {
-            entity.update(gameEntities,toDelete,toAdd );
+        for (GameEntity entity : gameEntities) {
+            entity.update(gameEntities, toDelete, toAdd);
         }
 
-        for(GameEntity entity : toAdd){
+        for (GameEntity entity : toAdd) {
             gameEntities.add(entity);
         }
 
-        for(GameEntity entity : toDelete){
-            if(entity instanceof ShipPNJ){
-                ennemiesKilled+=1;
+        for (GameEntity entity : toDelete) {
+            if (entity instanceof ShipPNJ) {
+                ennemiesKilled += 1;
                 ((ShipPNJ) entity).onDestroy(player);
-            }
-            else if(this.equals(player.getPlayerShip())){
-
+            } else if (entity instanceof Ship) {
+                if(score.getScore()<player.score){
+                    score.setScore(player.score);
+                }
             }
             entity.onDestroy();
             gameEntities.remove(entity);
@@ -244,7 +257,7 @@ public class GameView extends SurfaceView implements Runnable {
             //canvas.drawColor(Color.BLACK);
             movingBackground.draw(canvas);
 
-            for(GameEntity entity : gameEntities){
+            for (GameEntity entity : gameEntities) {
                 entity.draw(canvas);
             }
 
@@ -281,14 +294,24 @@ public class GameView extends SurfaceView implements Runnable {
     // So we can override this method and detect screen touches.
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        if(motionEvent.getX() == player.getPlayerShip().getX())
+        if (motionEvent.getX() == player.getPlayerShip().getX())
             return true;
 
-        int x = (int)motionEvent.getX();
-        player.getPlayerShip().setPoint(x-25);
+        int x = (int) motionEvent.getX();
+        player.getPlayerShip().setPoint(x - 25);
         invalidate();
         return true;
 
     }
 
+//    @Override
+//    public boolean onDragEvent(DragEvent event) {
+//
+//        int x = event.getAction();
+//        if (x == event.ACTION_DROP) {
+//            player.getPlayerShip().setPoint((int) event.getX() - 25);
+//            invalidate();
+//        }
+//        return true;
+//    }
 }

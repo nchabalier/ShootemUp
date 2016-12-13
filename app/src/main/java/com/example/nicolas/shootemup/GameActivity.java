@@ -22,14 +22,16 @@ public class GameActivity extends Activity{
         super.onCreate(savedInstanceState);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //setContentView(movingBackground);
-        gameView = new GameView(this);
-        setContentView(gameView);
 
         context = getBaseContext();
 
         //Get my current information (score, coins, information about ship, ...)
         Intent i = getIntent();
         ScoreBoard myScore = (ScoreBoard) i.getParcelableExtra("my_score");
+
+        gameView = new GameView(this,myScore);
+        setContentView(gameView);
+
 
 
     }

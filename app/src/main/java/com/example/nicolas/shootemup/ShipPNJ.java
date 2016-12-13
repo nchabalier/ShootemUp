@@ -20,14 +20,8 @@ public class ShipPNJ extends Ship {
     public ShipPNJ(Point position, Bitmap bitmap, int coin) {
         super(bitmap,position.x,position.y);
 
-        Matrix matrixRotation = new Matrix();
         this.behavior = new SteeringBehaviour(this,"Straight");
         this.coin = coin;
-
-        matrixRotation.setRotate(180);
-        this.bitmap = Bitmap.createBitmap(this.bitmap,0, 0,
-                this.bitmap.getWidth(),this.bitmap.getHeight(),
-                matrixRotation,false);
         isNpc = true;
     }
 
@@ -48,10 +42,13 @@ public class ShipPNJ extends Ship {
     public void update(List<GameEntity> listEntities, List<GameEntity> toDelete, List<GameEntity> toAdd) {
         if(isOutOfBounds()) {
             Random rand = new Random();
+            int superiorBound = (xBound-bitmap.getWidth()) + 1;
 
-            int randomX = rand.nextInt((xBound-bitmap.getWidth()) + 1);
-            setY(0);
-            setX(randomX);
+            if(superiorBound!=0) {
+                int randomX = rand.nextInt(superiorBound);
+                setY(0);
+                setX(randomX);
+            }
         }
 
         for(GameEntity entity : listEntities){
